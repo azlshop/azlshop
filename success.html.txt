@@ -4,7 +4,7 @@
 <body style="font-family:system-ui;margin:20px">
 <h2 id="h">Success</h2><div id="box">Loading...</div>
 <script>
-const WORKER_URL="https://YOUR-WORKER.workers.dev";
+const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
 const u=new URL(location.href);
 const sid=u.searchParams.get("session_id");
 const lang=u.searchParams.get("lang") || ((navigator.language||"en").toLowerCase().startsWith("ar")?"ar":"en");
@@ -22,3 +22,4 @@ document.getElementById("h").textContent=(lang==="ar")?"تم الدفع بنجا
 })();
 </script>
 </body></html>
+
