@@ -1,0 +1,13 @@
+<!doctype html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cancelled</title></head>
+<body style="font-family:system-ui;margin:20px">
+<h2 id="h">Cancelled</h2><a href="/" id="b">Back</a>
+<script>
+const lang=(new URL(location.href)).searchParams.get("lang") || ((navigator.language||"en").toLowerCase().startsWith("ar")?"ar":"en");
+document.documentElement.lang=lang;
+document.documentElement.dir=(lang==="ar")?"rtl":"ltr";
+document.getElementById("h").textContent=(lang==="ar")?"تم إلغاء الدفع ❌":"Payment cancelled ❌";
+document.getElementById("b").textContent=(lang==="ar")?"رجوع للمتجر":"Back to store";
+</script>
+</body></html>
