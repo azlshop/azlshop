@@ -78,7 +78,7 @@
 
 <script>
   // 1) ضع رابط الـ Worker لاحقًا (بعد ما تنشئه)
-  const WORKER_URL = "https://YOUR-WORKER.workers.dev";
+  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
 
   // 2) رقم COD واتساب (جاهز)
   const COD_WHATSAPP = "971544219984";
@@ -283,3 +283,4 @@
 </script>
 </body>
 </html>
+
