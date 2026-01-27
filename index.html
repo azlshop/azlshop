@@ -7,388 +7,244 @@
 
   <style>
     :root{
-      --bg:#ffffff;
-      --surface:#ffffff;
-      --muted:#6b7280;
-      --text:#0b1220;
+      --bg:#f7f8fb;
+      --card:#ffffff;
       --line:#e5e7eb;
-      --shadow: 0 12px 30px rgba(17,24,39,.08);
-      --shadow2: 0 10px 20px rgba(17,24,39,.06);
+      --muted:#6b7280;
+      --dark:#111827;
+      --shadow: 0 10px 28px rgba(17,24,39,.08);
       --radius:18px;
-      --radius2:14px;
-      --accent:#111827;
-      --chip:#f3f4f6;
-      --chipActive:#111827;
-      --chipActiveText:#fff;
-      --ok:#16a34a;
-      --warn:#b45309;
-      --danger:#dc2626;
-      --max:1150px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(900px 340px at 80% -40%, rgba(17,24,39,.08), transparent 60%),
-        radial-gradient(700px 300px at 10% -30%, rgba(17,24,39,.06), transparent 55%),
-        var(--bg);
-    }
-    .container{max-width:var(--max); margin:0 auto; padding:0 14px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:#111}
     header{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.86);
-      border-bottom: 1px solid rgba(229,231,235,.9);
+      position:sticky;top:0;z-index:20;
+      background:rgba(255,255,255,.9);backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 0;
-      gap:10px;
-    }
+    .wrap{max-width:1120px;margin:0 auto;padding:14px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .brand{
-      display:flex; align-items:center; gap:10px;
-      min-width: 160px;
+      display:flex;align-items:center;gap:10px;font-weight:900;
     }
     .logo{
-      width:38px; height:38px;
-      border-radius:12px;
-      background: linear-gradient(135deg, #111827, #334155);
-      box-shadow: var(--shadow2);
-    }
-    .brand h1{margin:0; font-size:16px; font-weight:900; letter-spacing:.2px}
-    .brand .sub{font-size:12px; color:var(--muted); margin-top:2px}
-
-    .actions{display:flex; gap:10px; align-items:center}
-    .btn{
-      border:1px solid rgba(17,24,39,.12);
-      background: var(--surface);
-      color: var(--text);
-      border-radius: 999px;
-      padding:10px 12px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      box-shadow: 0 6px 16px rgba(17,24,39,.04);
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      user-select:none;
-    }
-    .btn:hover{transform: translateY(-1px); box-shadow: 0 10px 18px rgba(17,24,39,.08)}
-    .btn:active{transform: translateY(0px)}
-    .btn.primary{
-      background: var(--accent);
-      color:#fff;
-      border-color: var(--accent);
-    }
-    .pill{min-width:44px; justify-content:center}
-    .count{
-      min-width:22px; height:22px;
-      border-radius:999px;
-      display:inline-flex; align-items:center; justify-content:center;
-      font-size:12px; font-weight:700;
-      background: rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.25);
-      color:#fff;
-      padding:0 7px;
-    }
-
-    .hero{padding:18px 0 10px}
-    .heroCard{
-      border:1px solid rgba(229,231,235,.85);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.78);
+      width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg,#111827,#334155);
       box-shadow: var(--shadow);
-      overflow:hidden;
     }
-    .heroInner{padding:16px; display:grid; gap:12px}
-    .heroTitle{margin:0; font-size:18px; font-weight:900}
-    .heroText{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    .muted{color:var(--muted);font-size:13px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+    .btn{
+      border:1px solid var(--dark);background:var(--dark);color:#fff;
+      border-radius:999px;padding:10px 14px;cursor:pointer;
+      font-weight:650;
+    }
+    .ghost{background:#fff;color:#111;border:1px solid var(--line)}
+    .btn:active{transform:translateY(1px)}
+    .pill{
+      border:1px solid var(--line);background:#fff;color:#111;
+      border-radius:999px;padding:8px 12px;cursor:pointer;
+      font-weight:650;
+    }
+    .pill.active{background:#111827;color:#fff;border-color:#111827}
+
+    .hero{
+      margin-top:14px;background:var(--card);border:1px solid var(--line);
+      border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+      display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;
+    }
+    .badges{display:flex;gap:10px;flex-wrap:wrap}
     .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px solid rgba(17,24,39,.12);
-      background: rgba(17,24,39,.04);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:12px;
-      color: rgba(17,24,39,.86);
+      display:flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;
+      font-size:12px;color:#111;
     }
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
-    .cats{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
-    .chip{
-      border:1px solid rgba(229,231,235,.95);
-      background: var(--chip);
-      border-radius:999px;
-      padding:10px 12px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:13px;
-      color: rgba(17,24,39,.86);
-      transition: background .12s ease, transform .12s ease;
-    }
-    .chip:hover{transform: translateY(-1px)}
-    .chip.active{background: var(--chipActive); color: var(--chipActiveText); border-color: var(--chipActive)}
+    .dot{width:8px;height:8px;border-radius:99px;background:#22c55e}
 
-    main{padding:14px 0 28px}
     .grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:12px;
-      margin-top:12px;
+      margin-top:14px;
+      display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
     }
-    @media(min-width:900px){
-      .grid{grid-template-columns: repeat(4, minmax(0,1fr)); gap:14px}
-      .heroInner{grid-template-columns: 1.4fr .6fr; align-items:center}
-    }
-    .card{
-      border:1px solid rgba(229,231,235,.95);
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.9);
-      box-shadow: 0 10px 22px rgba(17,24,39,.05);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      min-height: 260px;
-    }
-    .thumb{
-      height:140px;
-      background:
-        radial-gradient(220px 120px at 70% 30%, rgba(17,24,39,.10), transparent 55%),
-        linear-gradient(135deg, rgba(17,24,39,.06), rgba(17,24,39,.02));
-    }
-    .thumb img{width:100%; height:100%; object-fit:cover; help:cover; display:block}
-    .content{padding:12px; display:grid; gap:10px}
-    .name{font-weight:900; font-size:14px; margin:0}
-    .priceRow{display:flex; align-items:center; justify-content:space-between; gap:10px}
-    .price{font-weight:900; font-size:14px}
-    .small{font-size:12px;color:var(--muted)}
-    .addBtn{width:100%; justify-content:center}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 
-    /* Fields */
-    .field{display:grid;gap:6px}
-    .label{font-size:12px;color:var(--muted)}
-    .select, .file{
-      width:100%;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(229,231,235,.95);
-      background:#fff;
+    .card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);
+      display:flex;flex-direction:column;
     }
-    .help{font-size:12px;color:var(--muted);line-height:1.4}
-    .warn{color:var(--warn);font-weight:700}
-    .ok{color:var(--ok);font-weight:700}
+    .img{height:150px;background:linear-gradient(180deg,#f3f4f6,#fff)}
+    .p{padding:12px;display:grid;gap:10px}
+    .price{font-weight:800}
+    select,input[type="file"]{
+      width:100%;
+      padding:10px;border-radius:14px;border:1px solid var(--line);background:#fff;
+    }
+    .small{font-size:12px;color:var(--muted)}
 
     /* Drawer */
-    .drawer{position:fixed; inset:0; pointer-events:none; z-index:9999}
+    .drawer{position:fixed;inset:0;pointer-events:none;z-index:9999}
     .drawer.open{pointer-events:auto}
-    .backdrop{position:absolute; inset:0; background: rgba(0,0,0,.38); opacity:0; transition:.18s ease}
-    .drawer.open .backdrop{opacity:1}
+    .back{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:.2s}
+    .drawer.open .back{opacity:1}
     .panel{
-      position:absolute; inset-inline-end:0; top:0; bottom:0;
-      width:min(430px, 94vw);
-      background: rgba(255,255,255,.95);
-      backdrop-filter: blur(10px);
-      border-inline-start:1px solid rgba(229,231,235,.9);
-      transform: translateX(110%);
-      transition:.18s ease;
-      box-shadow: var(--shadow);
-      display:flex; flex-direction:column;
+      position:absolute;inset-inline-end:0;top:0;bottom:0;
+      width:min(440px,94vw);background:#fff;border-inline-start:1px solid var(--line);
+      transform:translateX(110%);transition:.2s;
+      display:flex;flex-direction:column;
     }
-    html[dir="ltr"] .panel{transform: translateX(-110%)}
-    .drawer.open .panel{transform: translateX(0)}
-    .panelHead{padding:14px; border-bottom:1px solid rgba(229,231,235,.9); display:flex; justify-content:space-between; align-items:center; gap:10px}
-    .panelBody{padding:14px; overflow:auto; flex:1}
-    .panelFoot{padding:14px; border-top:1px solid rgba(229,231,235,.9); display:grid; gap:10px; background: rgba(255,255,255,.92)}
-    .lineItem{
-      border:1px solid rgba(229,231,235,.95);
+    html[dir="ltr"] .panel{transform:translateX(-110%)}
+    .drawer.open .panel{transform:translateX(0)}
+    .head{padding:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+    .body{padding:14px;overflow:auto;flex:1}
+    .foot{padding:14px;border-top:1px solid var(--line)}
+    .cartItem{
+      border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;
       background:#fff;
-      border-radius: 14px;
-      padding:12px;
-      display:grid;
-      gap:8px;
-      box-shadow: 0 10px 18px rgba(17,24,39,.04);
-      margin-bottom:10px;
     }
-    .liTop{display:flex; justify-content:space-between; gap:10px}
-    .liName{font-weight:900; font-size:13px}
-    .liMeta{font-size:12px;color:var(--muted)}
-    .totalRow{display:flex;justify-content:space-between;align-items:center}
-    .err{color:var(--danger); font-size:12px; display:none}
-    .empty{border:1px dashed rgba(107,114,128,.35); border-radius: 14px; padding:14px; color: var(--muted); background: rgba(107,114,128,.06)}
+    .between{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .danger{color:#b91c1c}
+    .ok{color:#166534}
   </style>
 </head>
 
 <body>
-
 <header>
-  <div class="container">
-    <div class="nav">
+  <div class="wrap">
+    <div class="top">
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+        <div class="logo"></div>
         <div>
-          <h1 id="brand">متجر أزل</h1>
-          <div class="sub" id="hint">أحدث المنتجات</div>
+          <div id="brandTxt">متجر أزل</div>
+          <div class="muted" id="hintTxt">أحدث المنتجات</div>
         </div>
       </div>
 
-      <div class="actions">
-        <button class="btn pill" id="langBtn">EN</button>
-        <button class="btn primary" id="cartBtn">
-          🛒 <span class="count" id="count">0</span>
-        </button>
+      <div class="row">
+        <button class="btn ghost" id="langBtn">EN</button>
+        <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
       </div>
     </div>
+
+    <div class="hero">
+      <div>
+        <div style="font-weight:900;font-size:16px" id="heroTitle">تجربة شراء سريعة ونظيفة</div>
+        <div class="muted" id="heroSub">اختر قسمًا، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.</div>
+      </div>
+      <div class="badges">
+        <div class="badge"><span class="dot"></span><span id="b1">دفع آمن</span></div>
+        <div class="badge"><span class="dot"></span><span id="b2">COD متاح</span></div>
+        <div class="badge"><span class="dot"></span><span id="b3">عربي/إنجليزي تلقائي</span></div>
+      </div>
+    </div>
+
+    <div class="row" id="cats" style="margin-top:12px"></div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="container">
-    <div class="heroCard">
-      <div class="heroInner">
-        <div>
-          <h2 class="heroTitle" id="heroTitle">تجربة شراء نظيفة وسريعة</h2>
-          <p class="heroText" id="heroText">اختر قسمك، أضف للسلة، وادفع عبر Stripe أو اطلب COD عبر واتساب.</p>
-
-          <div class="row" style="gap:10px">
-            <span class="badge"><span class="dot"></span><span id="badge1">دفع آمن</span></span>
-            <span class="badge"><span class="dot"></span><span id="badge2">COD متاح</span></span>
-            <span class="badge"><span class="dot"></span><span id="badge3">عربي/إنجليزي تلقائي</span></span>
-          </div>
-
-          <div class="cats" id="cats"></div>
-        </div>
-
-        <div style="display:grid;gap:10px">
-          <div class="badge" style="justify-content:space-between">
-            <span id="stat1">الشحن والتسليم</span>
-            <b style="font-size:12px;color:rgba(17,24,39,.85)" id="stat1v">حسب المدينة</b>
-          </div>
-          <div class="badge" style="justify-content:space-between">
-            <span id="stat2">تواصل سريع</span>
-            <b style="font-size:12px;color:rgba(17,24,39,.85)">WhatsApp</b>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<main>
-  <div class="container">
-    <section class="grid" id="grid"></section>
-  </div>
+<main class="wrap">
+  <section class="grid" id="grid"></section>
 </main>
 
+<!-- Drawer -->
 <aside class="drawer" id="drawer" aria-hidden="true">
-  <div class="backdrop" id="back"></div>
-
   <div class="panel">
-    <div class="panelHead">
+    <div class="head">
       <b id="cartTitle">سلتك</b>
-      <button class="btn" id="closeBtn">✕</button>
+      <button class="btn ghost" id="closeBtn">✕</button>
     </div>
 
-    <div class="panelBody" id="items"></div>
+    <div class="body">
+      <div id="items"></div>
+    </div>
 
-    <div class="panelFoot">
-      <div class="totalRow">
+    <div class="foot">
+      <div class="between">
         <span id="totalLabel">الإجمالي</span>
         <b id="total">AED 0.00</b>
       </div>
 
-      <div class="row">
-        <button class="btn primary" style="flex:1;justify-content:center" id="payBtn">ادفع الآن</button>
-        <button class="btn" style="flex:1;justify-content:center" id="codBtn">الدفع عند الاستلام (COD)</button>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="payBtn">ادفع الآن</button>
+        <button class="btn ghost" id="codBtn">الدفع عند الاستلام (COD)</button>
       </div>
 
-      <div class="err" id="err"></div>
-      <div class="small" id="footNote">ملاحظة: إذا عملت Refresh لازم تعيد رفع صور الطباعة.</div>
+      <div class="muted" id="note" style="margin-top:10px">
+        COD: سنسجل الطلب بدون دفع الآن.
+      </div>
+
+      <div class="muted danger" id="err" style="display:none;margin-top:10px"></div>
     </div>
   </div>
+  <div class="back" id="back"></div>
 </aside>
 
 <script>
+  // ✅ إعداداتك
   const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
   const COD_WHATSAPP = "971544219984";
 
+  // ✅ ترجمة
   const dict = {
     ar: {
-      brand:"متجر أزل",
-      hint:"أحدث المنتجات",
-      heroTitle:"تجربة شراء نظيفة وسريعة",
-      heroText:"اختر قسمك، أضف للسلة، وادفع عبر Stripe أو اطلب COD عبر واتساب.",
-      badge1:"دفع آمن",
-      badge2:"COD متاح",
-      badge3:"عربي/إنجليزي تلقائي",
-      stat1:"الشحن والتسليم",
-      stat1v:"حسب المدينة",
-      cart:"سلتك",
-      total:"الإجمالي",
-      pay:"ادفع الآن",
-      cod:"الدفع عند الاستلام (COD)",
+      brand:"متجر أزل", hint:"أحدث المنتجات",
+      heroTitle:"تجربة شراء سريعة ونظيفة",
+      heroSub:"اختر قسمًا، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.",
+      b1:"دفع آمن", b2:"COD متاح", b3:"عربي/إنجليزي تلقائي",
+      cart:"سلتك", total:"الإجمالي",
+      pay:"ادفع الآن", cod:"الدفع عند الاستلام (COD)",
       add:"أضف للسلة",
       all:"الكل",
-      empty:"السلة فارغة",
+      empty:"السلة فارغة.",
       size:"الحجم",
       pieces:"عدد القطع",
-      uploadReq:"رفع صور للطباعة (إجباري)",
-      uploadHelp:"اختر عدد الصور مساوي لعدد القطع.",
-      uploadWarn:(need, got)=>`⚠️ لازم ترفع ${need} صور (الآن ${got})`,
-      uploadOk:"✅ عدد الصور صحيح",
-      needSelect:"اختر الحجم وعدد القطع.",
-      needFiles:(n)=>`لازم ترفع ${n} صور بالضبط.`,
-      missingFiles:(got,need)=>`يوجد منتج ناقص صور للطباعة (${got}/${need}).`
+      upload:"ارفع صور للطباعة",
+      files:"الصور",
+      needFiles:"لازم ترفع صور بعدد القطع",
+      note:"COD: سنسجل الطلب بدون دفع الآن.",
+      remove:"حذف",
+      refresh:"إذا ما ظهرت التغييرات اعمل Refresh مع Ctrl+F5."
     },
     en: {
-      brand:"azl MG shop",
-      hint:"Latest products",
+      brand:"azl MG shop", hint:"Latest products",
       heroTitle:"Clean & fast shopping experience",
-      heroText:"Pick a category, add to cart, pay via Stripe or place COD order on WhatsApp.",
-      badge1:"Secure payments",
-      badge2:"COD available",
-      badge3:"Auto Arabic/English",
-      stat1:"Shipping & delivery",
-      stat1v:"Depends on city",
-      cart:"Your cart",
-      total:"Total",
-      pay:"Pay now",
-      cod:"Cash on Delivery (COD)",
+      heroSub:"Pick a category, add to cart, then pay via Stripe or order COD on WhatsApp.",
+      b1:"Secure payments", b2:"COD available", b3:"Auto Arabic/English",
+      cart:"Your cart", total:"Total",
+      pay:"Pay now", cod:"Cash on Delivery (COD)",
       add:"Add to cart",
       all:"All",
-      empty:"Cart is empty",
+      empty:"Your cart is empty.",
       size:"Size",
       pieces:"Pieces",
-      uploadReq:"Upload print images (required)",
-      uploadHelp:"Select number of images equal to pieces.",
-      uploadWarn:(need, got)=>`⚠️ You must upload ${need} images (now ${got})`,
-      uploadOk:"✅ Correct number of images",
-      needSelect:"Select size and pieces.",
-      needFiles:(n)=>`You must upload exactly ${n} images.`,
-      missingFiles:(got,need)=>`A product is missing print files (${got}/${need}).`
+      upload:"Upload print files",
+      files:"Files",
+      needFiles:"You must upload files equal to pieces",
+      note:"COD: we will place the order without payment.",
+      remove:"Remove",
+      refresh:"If updates do not show, hard refresh with Ctrl+F5."
     }
   };
 
   const $ = (s)=>document.querySelector(s);
+  function detectLang(){
+    const l = (navigator.language || "en").toLowerCase();
+    return l.startsWith("ar") ? "ar" : "en";
+  }
+
   const state = {
-    lang: localStorage.getItem("azl_lang") || ((navigator.language||"en").toLowerCase().startsWith("ar") ? "ar" : "en"),
+    lang: localStorage.getItem("azl_lang") || detectLang(),
     cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
     categories: [],
     products: [],
     activeCategory: "all"
   };
 
-  // حفظ ملفات الرفع في الذاكرة فقط
-  const uploads = new Map(); // key -> File[]
-
   function t(k){ return dict[state.lang][k]; }
   function money(x){ return `AED ${Number(x).toFixed(2)}`; }
   function save(){
-    localStorage.setItem("azl_cart", JSON.stringify(state.cart));
     localStorage.setItem("azl_lang", state.lang);
+    localStorage.setItem("azl_cart", JSON.stringify(state.cart));
   }
   function showErr(msg){
     const el = $("#err");
@@ -396,10 +252,35 @@
     el.textContent = msg || "";
   }
 
+  // ✅ Fix NaN: migrate old cart values from previous versions
+  (function migrateCart(){
+    const cart = Array.isArray(state.cart) ? state.cart : [];
+    state.cart = cart.map((it)=>{
+      const qty = Number(it.qty ?? 1);
+      const priceRaw = it.price ?? it.unitPrice ?? it.unit_amount ?? 0;
+      const price = Number(priceRaw);
+      return {
+        ...it,
+        qty: (Number.isFinite(qty) && qty>0) ? qty : 1,
+        price: Number.isFinite(price) ? price : 0,
+        pieces: it.pieces ? Number(it.pieces) : it.pieces,
+        size: it.size || it.sizeKey || it.sizeLabel || null,
+        filesCount: Number(it.filesCount ?? 0)
+      };
+    }).filter(it => it && (it.id || it.key));
+    save();
+  })();
+
+  // ✅ تحميل المنتجات من products.json.txt (لأن ملفك الحالي بهذه الصيغة)
   async function loadProducts(){
-    const res = await fetch("./products.json", { cache: "no-store" });
-    if(!res.ok) throw new Error("products.json not found (HTTP " + res.status + ")");
-    const data = await res.json();
+    const res = await fetch("/products.json.txt", { cache:"no-store" });
+    if(!res.ok) throw new Error("products.json.txt not found (HTTP "+res.status+")");
+
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch(e){ throw new Error("products.json.txt is not valid JSON. " + (e?.message||e)); }
+
     state.categories = Array.isArray(data.categories) ? data.categories : [];
     state.products = Array.isArray(data.products) ? data.products : [];
   }
@@ -408,35 +289,33 @@
     document.documentElement.lang = state.lang;
     document.documentElement.dir  = state.lang==="ar" ? "rtl" : "ltr";
 
-    $("#brand").textContent = t("brand");
-    $("#hint").textContent = t("hint");
+    $("#brandTxt").textContent = t("brand");
+    $("#hintTxt").textContent  = t("hint");
     $("#heroTitle").textContent = t("heroTitle");
-    $("#heroText").textContent = t("heroText");
-    $("#badge1").textContent = t("badge1");
-    $("#badge2").textContent = t("badge2");
-    $("#badge3").textContent = t("badge3");
-    $("#stat1").textContent = t("stat1");
-    $("#stat1v").textContent = t("stat1v");
-
+    $("#heroSub").textContent = t("heroSub");
+    $("#b1").textContent = t("b1");
+    $("#b2").textContent = t("b2");
+    $("#b3").textContent = t("b3");
     $("#cartTitle").textContent = t("cart");
     $("#totalLabel").textContent = t("total");
     $("#payBtn").textContent = t("pay");
     $("#codBtn").textContent = t("cod");
+    $("#note").textContent = t("note");
     $("#langBtn").textContent = state.lang==="ar" ? "EN" : "AR";
   }
 
   function renderCategories(){
-    const cats = $("#cats");
-    cats.innerHTML = `
-      <button class="chip ${state.activeCategory==="all" ? "active":""}" data-cat="all">${t("all")}</button>
-      ${state.categories.map(c=>`
-        <button class="chip ${state.activeCategory===c.id ? "active":""}" data-cat="${c.id}">
-          ${state.lang==="ar" ? c.ar : c.en}
-        </button>
-      `).join("")}
-    `;
+    const cats = [
+      {id:"all", ar:t("all"), en:t("all")},
+      ...state.categories
+    ];
+    $("#cats").innerHTML = cats.map(c=>`
+      <button class="pill ${state.activeCategory===c.id?'active':''}" data-cat="${c.id}">
+        ${state.lang==="ar" ? (c.ar||c.en||c.id) : (c.en||c.ar||c.id)}
+      </button>
+    `).join("");
 
-    cats.querySelectorAll("button[data-cat]").forEach(b=>{
+    $("#cats").querySelectorAll("[data-cat]").forEach(b=>{
       b.addEventListener("click", ()=>{
         state.activeCategory = b.dataset.cat;
         renderCategories();
@@ -445,193 +324,175 @@
     });
   }
 
-  function renderProducts(){
-    const list = state.activeCategory==="all"
+  function getList(){
+    return (state.activeCategory==="all")
       ? state.products
       : state.products.filter(p => p.category === state.activeCategory);
+  }
 
+  function renderProducts(){
+    const list = getList();
     $("#grid").innerHTML = list.map(p=>{
-      const name = p.name?.[state.lang] || p.name?.en || "-";
-      const img = p.image ? `<img src="${p.image}" alt="${name}" loading="lazy">` : "";
-      const hasOpt = !!p.options?.size?.length;
+      const name = p.name?.[state.lang] || p.name?.en || p.name?.ar || "-";
+      const isMagnetic = p.type === "magnetic_print";
 
-      return `
-        <article class="card">
-          <div class="thumb">${img}</div>
-          <div class="content">
-            <p class="name">${name}</p>
+      if(isMagnetic){
+        // Sizes and pieces are required selections
+        const sizes = Array.isArray(p.sizes) ? p.sizes : [];
+        const pieces = Array.isArray(p.pieces) ? p.pieces : [];
 
-            ${hasOpt ? `
-              <div class="field">
-                <div class="label">${t("size")}</div>
-                <select class="select" id="size_${p.id}">
-                  ${p.options.size.map(s=>`
-                    <option value="${s.key}">
-                      ${(state.lang==="ar"?s.ar:s.en)} — AED ${Number(s.price).toFixed(2)}
-                    </option>
-                  `).join("")}
-                </select>
-              </div>
+        return `
+          <article class="card">
+            <div class="img"></div>
+            <div class="p">
+              <b>${name}</b>
+              <div class="small">${t("size")}</div>
+              <select id="size_${p.id}">
+                ${sizes.map(s=>`
+                  <option value="${s.key}" data-price="${s.price}">
+                    ${state.lang==="ar" ? s.ar : s.en} — ${money(s.price)}
+                  </option>
+                `).join("")}
+              </select>
 
-              <div class="field">
-                <div class="label">${t("pieces")}</div>
-                <select class="select" id="pieces_${p.id}">
-                  ${p.options.pieces.map(n=>`<option value="${n}">${n}</option>`).join("")}
-                </select>
-              </div>
+              <div class="small">${t("pieces")}</div>
+              <select id="pieces_${p.id}">
+                ${pieces.map(n=>`<option value="${n}">${n}</option>`).join("")}
+              </select>
 
-              ${p.options.upload_required ? `
-                <div class="field">
-                  <div class="label">${t("uploadReq")}</div>
-                  <input class="file" type="file" id="files_${p.id}" accept="image/*" multiple />
-                  <div class="help" id="filesHelp_${p.id}">${t("uploadHelp")}</div>
-                </div>
-              ` : ``}
-            ` : `
-              <div class="priceRow">
-                <span class="price">${money(p.price || 0)}</span
-                ><span class="small">${p.category || ""}</span>
-              </div>
-            `}
+              <div class="small">${t("upload")} (${t("needFiles")})</div>
+              <input type="file" id="files_${p.id}" multiple accept="image/*,.jpg,.jpeg,.png,.pdf" />
 
-            <button class="btn primary addBtn" data-add="${p.id}">${t("add")}</button>
-          </div>
-        </article>
-      `;
+              <button class="btn" data-add="${p.id}">${t("add")}</button>
+              <div class="muted small">${t("refresh")}</div>
+            </div>
+          </article>
+        `;
+      } else {
+        const price = Number(p.price || 0);
+        return `
+          <article class="card">
+            <div class="img"></div>
+            <div class="p">
+              <b>${name}</b>
+              <div class="price">${money(price)}</div>
+              <button class="btn" data-add="${p.id}">${t("add")}</button>
+            </div>
+          </article>
+        `;
+      }
     }).join("");
 
-    document.querySelectorAll("button[data-add]").forEach(btn=>{
+    document.querySelectorAll("[data-add]").forEach(btn=>{
       btn.addEventListener("click", ()=> addToCart(btn.dataset.add));
-    });
-
-    // تحديث رسالة رفع الصور حسب عدد القطع
-    list.forEach(p=>{
-      if(p.options?.upload_required){
-        const piecesEl = document.getElementById(`pieces_${p.id}`);
-        const filesEl  = document.getElementById(`files_${p.id}`);
-        const helpEl   = document.getElementById(`filesHelp_${p.id}`);
-        if(!piecesEl || !filesEl || !helpEl) return;
-
-        const refreshHelp = () => {
-          const need = Number(piecesEl.value || 0);
-          const got  = Number(filesEl.files?.length || 0);
-          if(got === need){
-            helpEl.innerHTML = `<span class="ok">${t("uploadOk")}</span>`;
-          } else {
-            helpEl.innerHTML = `<span class="warn">${t("uploadWarn")(need, got)}</span>`;
-          }
-        };
-
-        piecesEl.addEventListener("change", refreshHelp);
-        filesEl.addEventListener("change", refreshHelp);
-        refreshHelp();
-      }
     });
 
     updateCartUI();
   }
 
   function addToCart(id){
+    showErr("");
+
     const p = state.products.find(x=>x.id===id);
     if(!p) return;
 
-    // المنتج مع خيارات
-    if(p.options?.size?.length){
-      const sizeKey = document.getElementById(`size_${id}`)?.value;
-      const pieces  = Number(document.getElementById(`pieces_${id}`)?.value || 0);
-      const sizeObj = p.options.size.find(s=>s.key===sizeKey);
+    // magnetic product requires size + pieces + files count
+    if(p.type === "magnetic_print"){
+      const sizeEl = document.getElementById(`size_${id}`);
+      const piecesEl = document.getElementById(`pieces_${id}`);
+      const filesEl = document.getElementById(`files_${id}`);
 
-      if(!sizeObj || !pieces){
-        alert(t("needSelect"));
+      const sizeKey = sizeEl?.value;
+      const pieces = Number(piecesEl?.value || 0);
+      const filesCount = filesEl?.files ? filesEl.files.length : 0;
+
+      if(!sizeKey || !pieces){
+        showErr(state.lang==="ar" ? "اختر الحجم وعدد القطع" : "Select size and pieces");
+        return;
+      }
+      if(filesCount !== pieces){
+        showErr(t("needFiles") + ` (${t("files")}: ${filesCount}/${pieces})`);
         return;
       }
 
-      // رفع صور إجباري
-      if(p.options.upload_required){
-        const files = Array.from(document.getElementById(`files_${id}`)?.files || []);
-        if(files.length !== pieces){
-          alert(t("needFiles")(pieces));
-          return;
-        }
-      }
+      const sizeObj = (p.sizes||[]).find(s=>s.key===sizeKey);
+      const price = Number(sizeObj?.price || 0);
+      const sizeLabel = state.lang==="ar" ? (sizeObj?.ar||sizeKey) : (sizeObj?.en||sizeKey);
 
       const key = `${id}|${sizeKey}|${pieces}`;
       const it = state.cart.find(x=>x.key===key);
-
-      const unitPrice = Number(sizeObj.price || 0);
-      const sizeLabel = state.lang==="ar" ? sizeObj.ar : sizeObj.en;
-
       if(it){
-        it.qty++;
+        it.qty += 1;
+        it.filesCount = filesCount; // keep info
       } else {
         state.cart.push({
-          key,
-          id,
-          qty: 1,
-          price: unitPrice,
+          key, id,
           name: p.name,
-          options: { sizeKey, sizeLabel, pieces }
+          qty: 1,
+          price,
+          type: p.type,
+          sizeKey,
+          sizeLabel,
+          pieces,
+          filesCount
         });
       }
-
-      // خزّن الملفات في الذاكرة
-      if(p.options.upload_required){
-        const files = Array.from(document.getElementById(`files_${id}`)?.files || []);
-        uploads.set(key, files);
-      }
-
-      save(); updateCartUI(); openCart();
-      return;
+    } else {
+      const price = Number(p.price || 0);
+      const key = `${id}|-|-`;
+      const it = state.cart.find(x=>x.key===key);
+      if(it) it.qty += 1;
+      else state.cart.push({ key, id, name:p.name, qty:1, price, type:p.type || "simple" });
     }
 
-    // منتج عادي
-    const it = state.cart.find(x=>x.id===id && !x.key);
-    if(it) it.qty++;
-    else state.cart.push({ id, qty:1, price:Number(p.price||0), name:p.name });
+    save();
+    updateCartUI();
+    openCart();
+  }
 
-    save(); updateCartUI(); openCart();
+  function removeItem(key){
+    state.cart = state.cart.filter(i => i.key !== key);
+    save();
+    updateCartUI();
   }
 
   function updateCartUI(){
-    $("#count").textContent = state.cart.reduce((s,i)=>s+i.qty,0);
-    const total = state.cart.reduce((s,i)=> s + (i.price*i.qty), 0);
+    const count = state.cart.reduce((s,i)=>s + Number(i.qty||0), 0);
+    $("#count").textContent = count;
+
+    const total = state.cart.reduce((s,i)=> s + (Number(i.price||0) * Number(i.qty||0)), 0);
     $("#total").textContent = money(total);
 
     const box = $("#items");
     if(!state.cart.length){
-      box.innerHTML = `<div class="empty">${t("empty")}</div>`;
+      box.innerHTML = `<div class="muted">${t("empty")}</div>`;
       return;
     }
 
     box.innerHTML = state.cart.map(i=>{
-      const name = (i.name?.[state.lang] || i.name?.en || "-");
-      const opt = i.options
-        ? (state.lang==="ar"
-            ? `• ${i.options.sizeLabel} • ${t("pieces")}: ${i.options.pieces}`
-            : `• ${i.options.sizeLabel} • ${t("pieces")}: ${i.options.pieces}`
-          )
-        : "";
-
-      const filesCount = i.options ? (uploads.get(i.key)?.length || 0) : 0;
-      const filesNeed  = i.options ? Number(i.options.pieces || 0) : 0;
-      const filesLine  = i.options
-        ? `<div class="liMeta">${state.lang==="ar" ? "الصور" : "Files"}: ${filesCount}/${filesNeed}</div>`
+      const name = i.name?.[state.lang] || i.name?.en || i.name?.ar || "-";
+      const extra = (i.type==="magnetic_print")
+        ? `<div class="small muted">• ${t("size")}: ${i.sizeLabel} • ${t("pieces")}: ${i.pieces} • ${t("files")}: ${i.filesCount}/${i.pieces}</div>`
         : "";
 
       return `
-        <div class="lineItem">
-          <div class="liTop">
-            <div>
-              <div class="liName">${name}</div>
-              <div class="liMeta">${opt}</div>
-              ${filesLine}
-            </div>
-            <div class="liMeta">${money(i.price*i.qty)}</div>
+        <div class="cartItem">
+          <div class="between">
+            <b>${name}</b>
+            <button class="btn ghost" style="padding:6px 10px" data-rm="${i.key}">${t("remove")}</button>
           </div>
-          <div class="liMeta">${money(i.price)} × ${i.qty}</div>
+          ${extra}
+          <div class="between" style="margin-top:8px">
+            <span class="muted">${money(i.price)} × ${i.qty}</span>
+            <b>${money(Number(i.price)*Number(i.qty))}</b>
+          </div>
         </div>
       `;
     }).join("");
+
+    document.querySelectorAll("[data-rm]").forEach(b=>{
+      b.addEventListener("click", ()=> removeItem(b.dataset.rm));
+    });
   }
 
   function openCart(){ $("#drawer").classList.add("open"); }
@@ -640,28 +501,24 @@
   async function payNow(){
     try{
       showErr("");
-
       if(!state.cart.length){ openCart(); return; }
 
-      // منع الدفع إذا ناقص صور لأي منتج يحتاج رفع
+      // validate magnetic items files count
       for(const i of state.cart){
-        if(i.options){
-          const got = uploads.get(i.key)?.length || 0;
-          const need = Number(i.options.pieces || 0);
-          if(got !== need){
-            alert(t("missingFiles")(got, need));
-            openCart();
-            return;
+        if(i.type==="magnetic_print"){
+          if(Number(i.filesCount||0) !== Number(i.pieces||0)){
+            throw new Error(t("needFiles") + ` (${t("files")}: ${i.filesCount}/${i.pieces})`);
           }
         }
       }
 
       const items = state.cart.map(i=>{
-        const opt = i.options
-          ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}`
+        const name = (i.name?.[state.lang] || i.name?.en || i.name?.ar || "Item");
+        const opt = i.type==="magnetic_print"
+          ? ` — ${t("size")}: ${i.sizeLabel} — ${t("pieces")}: ${i.pieces}`
           : "";
         return {
-          name: String((i.name?.[state.lang] || i.name?.en || "Item") + opt),
+          name: String(name + opt),
           unit_amount: Number(i.price),
           quantity: Number(i.qty)
         };
@@ -673,58 +530,62 @@
         body: JSON.stringify({ currency:"AED", lang: state.lang, items })
       });
 
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data.error || ("Worker error " + res.status));
-      if(!data.url) throw new Error("No checkout URL returned");
-      location.href = data.url;
+      const text = await res.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch { data = { raw:text }; }
 
+      if(!res.ok) throw new Error(data.error || data.raw || ("Worker error " + res.status));
+      if(!data.url) throw new Error("No checkout URL returned");
+
+      location.href = data.url;
     } catch(e){
       showErr("Payment error: " + (e?.message || e));
       alert("Payment error: " + (e?.message || e));
+      openCart();
     }
   }
 
   function placeCOD(){
-    // تحذير للعميل: الصور محفوظة بالمتصفح فقط
+    const total = state.cart.reduce((s,i)=> s + (Number(i.price||0)*Number(i.qty||0)), 0);
     const lines = state.cart.map(i=>{
-      const name = (i.name?.[state.lang] || i.name?.en || "-");
-      const opt = i.options ? ` (${i.options.sizeLabel}, ${t("pieces")}: ${i.options.pieces})` : "";
-      return `- ${name}${opt} x${i.qty}`;
+      const name = (i.name?.[state.lang] || i.name?.en || i.name?.ar || "-");
+      const opt = i.type==="magnetic_print" ? ` (${i.sizeLabel}, ${t("pieces")}: ${i.pieces})` : "";
+      return `- ${name}${opt} x${i.qty} = ${money(Number(i.price)*Number(i.qty))}`;
     }).join("\n");
 
-    const msg = state.lang==="ar"
-      ? `طلب COD من متجر أزل\n${lines}\n\nملاحظة: صور الطباعة سيتم إرسالها من نفس الجهاز قبل تنفيذ الطلب.`
-      : `COD order from azl MG shop\n${lines}\n\nNote: Print images will be sent from the same device before processing.`;
+    const msg = (state.lang==="ar")
+      ? `طلب COD من متجر أزل\n${lines}\nالإجمالي: ${money(total)}`
+      : `COD order from azl MG shop\n${lines}\nTotal: ${money(total)}`;
 
     window.open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
   }
 
-  // Events
+  // events
   $("#langBtn").addEventListener("click", ()=>{
-    state.lang = state.lang==="ar" ? "en" : "ar";
+    state.lang = (state.lang==="ar") ? "en" : "ar";
     save();
     applyLang();
     renderCategories();
     renderProducts();
   });
-
   $("#cartBtn").addEventListener("click", openCart);
   $("#back").addEventListener("click", closeCart);
   $("#closeBtn").addEventListener("click", closeCart);
   $("#payBtn").addEventListener("click", payNow);
   $("#codBtn").addEventListener("click", placeCOD);
 
-  // Boot
+  // boot
   (async ()=>{
     try{
       await loadProducts();
       applyLang();
       renderCategories();
       renderProducts();
+      updateCartUI();
     } catch(e){
       applyLang();
       showErr("Load error: " + (e?.message || e));
-      $("#grid").innerHTML = `<div class="empty">Load error: ${(e?.message||e)}</div>`;
+      $("#grid").innerHTML = `<div class="muted">Load error: ${(e?.message||e)}</div>`;
     }
   })();
 </script>
