@@ -1,0 +1,27 @@
+{
+  "categories": [
+    { "id": "print", "ar": "طباعة", "en": "Print" },
+    { "id": "gifts", "ar": "هدايا", "en": "Gifts" },
+    { "id": "frames", "ar": "لوحات", "en": "Frames" }
+  ],
+  "products": [
+    {
+      "id": "p1",
+      "category": "print",
+      "name": { "ar": "طباعة صورة", "en": "Photo Print" },
+      "price": 49
+    },
+    {
+      "id": "p2",
+      "category": "gifts",
+      "name": { "ar": "هدية مميزة", "en": "Special Gift" },
+      "price": 79
+    },
+    {
+      "id": "p3",
+      "category": "frames",
+      "name": { "ar": "لوحة حائط", "en": "Wall Frame" },
+      "price": 120
+    }
+  ]
+}
