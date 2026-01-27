@@ -3,336 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>متجر أزل | azl MG shop</title>
+  <title>تم الدفع بنجاح</title>
   <style>
-    :root{--line:#e5e7eb;--muted:#6b7280;--dark:#111827}
-    body{font-family:system-ui;margin:0;background:#fff;color:#111}
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:12px 14px;z-index:10}
-    .top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .brand{font-weight:900}
-    .btn{border:1px solid var(--dark);background:var(--dark);color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer}
-    .ghost{background:#fff;color:#111;border:1px solid var(--line)}
-    .wrap{max-width:1100px;margin:0 auto;padding:14px}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .card{border:1px solid var(--line);border-radius:16px;overflow:hidden}
-    .img{height:140px;background:#f3f4f6}
-    .p{padding:12px;display:grid;gap:8px}
-    .muted{color:var(--muted);font-size:13px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .drawer{position:fixed;inset:0;pointer-events:none;z-index:9999}
-    .drawer.open{pointer-events:auto}
-    .panel{position:absolute;inset-inline-end:0;top:0;bottom:0;width:min(420px,92vw);background:#fff;border-inline-start:1px solid var(--line);transform:translateX(110%);transition:.2s;z-index:2;pointer-events:auto}
-    html[dir="ltr"] .panel{transform:translateX(-110%)}
-    .drawer.open .panel{transform:translateX(0)}
-    .back{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:.2s;z-index:1}
-    .drawer.open .back{opacity:1}
-    /* مهم: اجعل الخلفية لا تمنع الضغط على الأزرار داخل الـ panel */
-    .drawer.open .back{pointer-events:none;}
-    .head{padding:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-    .body{padding:14px;overflow:auto;max-height:calc(100vh - 180px)}
-    .foot{padding:14px;border-top:1px solid var(--line)}
-    @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
-    select{padding:10px;border-radius:12px;border:1px solid var(--line);background:#fff}
+    body{font-family:system-ui;margin:0;padding:24px}
+    .card{max-width:520px;margin:0 auto;border:1px solid #e5e7eb;border-radius:16px;padding:18px}
+    .btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:999px;border:1px solid #111;background:#111;color:#fff;text-decoration:none}
   </style>
 </head>
-
 <body>
-<header>
-  <div class="top">
-    <div class="brand" id="brand">متجر أزل</div>
-    <div class="row">
-      <button class="btn ghost" id="langBtn">EN</button>
-      <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
-    </div>
+  <div class="card">
+    <h2 id="h">تم الدفع بنجاح ✅</h2>
+    <p id="p">شكراً لك. تم استلام طلبك.</p>
+    <p><b>Session ID:</b> <span id="sid">-</span></p>
+    <a class="btn" href="/index.html" id="b">العودة للمتجر</a>
   </div>
-  <div class="muted" id="hint" style="margin-top:10px">أحدث المنتجات</div>
-</header>
-
-<main class="wrap">
-  <section class="grid" id="grid"></section>
-</main>
-
-<aside class="drawer" id="drawer" aria-hidden="true">
-  <div class="panel">
-    <div class="head">
-      <b id="cartTitle">سلتك</b>
-      <button class="btn ghost" id="close">✕</button>
-    </div>
-
-    <div class="body" id="items"></div>
-
-    <div class="foot">
-      <div class="row" style="justify-content:space-between">
-        <span id="totalLabel">الإجمالي</span>
-        <b id="total">AED 0.00</b>
-      </div>
-
-      <div class="row" style="margin-top:10px">
-        <button class="btn" id="payBtn">ادفع الآن</button>
-        <button class="btn ghost" id="codBtn">الدفع عند الاستلام (COD)</button>
-      </div>
-
-      <div class="muted" style="margin-top:10px" id="note">COD: سنسجل الطلب بدون دفع الآن.</div>
-    </div>
-  </div>
-  <div class="back" id="back"></div>
-</aside>
 
 <script>
-  // Worker API (Stripe)
-  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
-  // COD WhatsApp
-  const COD_WHATSAPP = "971544219984";
+  const q = new URLSearchParams(location.search);
+  const lang = (q.get("lang") === "en") ? "en" : "ar";
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==="ar" ? "rtl" : "ltr";
 
-  const dict = {
-    ar: { brand:"متجر أزل", hint:"أحدث المنتجات", cart:"سلتك", total:"الإجمالي", pay:"ادفع الآن", cod:"الدفع عند الاستلام (COD)", note:"COD: سنسجل الطلب بدون دفع الآن.",
-          add:"أضف للسلة", empty:"سلتك فارغة.", size:"الحجم", pieces:"عدد القطع" },
-    en: { brand:"azl MG shop", hint:"Latest products", cart:"Your cart", total:"Total", pay:"Pay now", cod:"Cash on Delivery (COD)", note:"COD: we will place the order without payment.",
-          add:"Add to cart", empty:"Your cart is empty.", size:"Size", pieces:"Pieces" }
-  };
+  const sid = q.get("session_id") || "-";
+  document.getElementById("sid").textContent = sid;
 
-  function detectDeviceLang(){
-    const l = (navigator.language || "en").toLowerCase();
-    return l.startsWith("ar") ? "ar" : "en";
+  if(lang==="en"){
+    document.title = "Payment successful";
+    document.getElementById("h").textContent = "Payment successful ✅";
+    document.getElementById("p").textContent = "Thank you. Your order has been received.";
+    document.getElementById("b").textContent = "Back to shop";
   }
-
-  const state = {
-    lang: localStorage.getItem("azl_lang") || detectDeviceLang(),
-    cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
-    products: [
-      {
-        id:"p1", cat:"print",
-        name:{ ar:"منتج طباعة", en:"Print Product" },
-        options: {
-          size: [
-            { key:"size1", ar:"حجم 1", en:"Size 1", price: 49.00 },
-            { key:"size2", ar:"حجم 2", en:"Size 2", price: 59.00 }
-          ],
-          pieces: [1,2]
-        }
-      },
-      {
-        id:"p2", cat:"basic",
-        name:{ ar:"منتج عادي", en:"Basic Product" },
-        options: null,
-        price: 25.00
-      }
-    ]
-  };
-
-  const $ = (s)=>document.querySelector(s);
-  function t(k){ return dict[state.lang][k]; }
-  function money(x){ return `AED ${Number(x).toFixed(2)}`; }
-
-  function save(){
-    localStorage.setItem("azl_lang", state.lang);
-    localStorage.setItem("azl_cart", JSON.stringify(state.cart));
-  }
-
-  function applyLang(){
-    document.documentElement.lang = state.lang;
-    document.documentElement.dir = state.lang==="ar" ? "rtl" : "ltr";
-    $("#brand").textContent = t("brand");
-    $("#hint").textContent = t("hint");
-    $("#cartTitle").textContent = t("cart");
-    $("#totalLabel").textContent = t("total");
-    $("#payBtn").textContent = t("pay");
-    $("#codBtn").textContent = t("cod");
-    $("#note").textContent = t("note");
-    $("#langBtn").textContent = state.lang==="ar" ? "EN" : "AR";
-    render();
-  }
-
-  // Make add() available for inline onclick
-  window.add = function add(id){
-    const p = state.products.find(x=>x.id===id);
-    if(!p) return;
-
-    if (p.options?.size?.length){
-      const sizeKey = document.getElementById(`size_${id}`)?.value;
-      const pieces = Number(document.getElementById(`pieces_${id}`)?.value || 1);
-      const sizeObj = p.options.size.find(s=>s.key===sizeKey);
-      const sizeLabel = state.lang==="ar" ? sizeObj.ar : sizeObj.en;
-      const unitPrice = Number(sizeObj.price);
-
-      const key = `${id}|${sizeKey}|${pieces}`;
-      const it = state.cart.find(x=>x.key===key);
-      if(it) it.qty++;
-      else state.cart.push({ key, id, name:p.name, qty:1, unitPrice, options:{ sizeLabel, pieces }});
-    } else {
-      const unitPrice = Number(p.price || 0);
-      const key = `${id}|-|-`;
-      const it = state.cart.find(x=>x.key===key);
-      if(it) it.qty++;
-      else state.cart.push({ key, id, name:p.name, qty:1, unitPrice, options:null });
-    }
-
-    save(); updateCartUI();
-  }
-
-  function render(){
-    $("#grid").innerHTML = state.products.map(p=>`
-      <article class="card">
-        <div class="img"></div>
-        <div class="p">
-          <b>${p.name[state.lang]}</b>
-
-          ${p.options?.size ? `
-            <div class="row" style="gap:8px">
-              <select id="size_${p.id}">
-                ${p.options.size.map(s=>`
-                  <option value="${s.key}">
-                    ${state.lang==='ar'?s.ar:s.en} — ${money(s.price)}
-                  </option>
-                `).join("")}
-              </select>
-              <select id="pieces_${p.id}">
-                ${p.options.pieces.map(n=>`
-                  <option value="${n}">
-                    ${t("pieces")}: ${n}
-                  </option>
-                `).join("")}
-              </select>
-            </div>
-          ` : `<div class="muted">${money(p.price)}</div>`}
-
-          <div class="row" style="justify-content:space-between">
-            <button class="btn ghost" onclick="add('${p.id}')">${t("add")}</button>
-          </div>
-        </div>
-      </article>
-    `).join("");
-
-    updateCartUI();
-  }
-
-  function updateCartUI(){
-    $("#count").textContent = state.cart.reduce((s,i)=>s+i.qty,0);
-    const total = state.cart.reduce((s,i)=> s + (i.unitPrice * i.qty), 0);
-    $("#total").textContent = money(total);
-
-    const box = $("#items");
-    if(!state.cart.length){
-      box.innerHTML = `<div class="muted">${t("empty")}</div>`;
-      return;
-    }
-    box.innerHTML = state.cart.map(i=>{
-      const opt = i.options ? ` • ${t("size")}: ${i.options.sizeLabel} • ${t("pieces")}: ${i.options.pieces}` : "";
-      return `
-        <div class="card" style="margin-bottom:10px">
-          <div class="p">
-            <b>${(i.name[state.lang]||i.name.en)}${opt}</b>
-            <div class="row" style="justify-content:space-between">
-              <span>${money(i.unitPrice)} × ${i.qty}</span>
-              <span class="muted">${money(i.unitPrice*i.qty)}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function openCart(){ $("#drawer").classList.add("open"); }
-  function closeCart(){ $("#drawer").classList.remove("open"); }
-
-  // تشخيص واضح لمعرفة أين يتوقف Pay now
-  async function payNow(){
-    try {
-      alert("STEP 1: payNow started");
-
-      if(!state.cart.length){
-        alert("STEP 1.1: cart empty");
-        openCart();
-        return;
-      }
-
-      const items = state.cart.map(i => {
-        const opt = i.options
-          ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}`
-          : "";
-        return {
-          name: String((i.name[state.lang] || i.name.en) + opt),
-          unit_amount: Number(i.unitPrice),
-          quantity: Number(i.qty)
-        };
-      });
-
-      alert("STEP 2: items ready | count=" + items.length);
-
-      const url = `${WORKER_URL}/create-checkout-session`;
-      alert("STEP 3: calling Worker => " + url);
-
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 12000);
-
-      let res;
-      try {
-        res = await fetch(url, {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify({ lang: state.lang, currency:"AED", items }),
-          signal: controller.signal
-        });
-      } finally {
-        clearTimeout(timer);
-      }
-
-      alert("STEP 4: Worker responded | status=" + res.status);
-
-      const text = await res.text();
-      let data;
-      try { data = JSON.parse(text); } catch { data = { raw: text }; }
-
-      if(!res.ok){
-        alert("STEP 5: Worker error => " + (data.error || data.raw || "Unknown"));
-        return;
-      }
-
-      if(!data.url){
-        alert("STEP 6: Missing checkout url => " + JSON.stringify(data));
-        return;
-      }
-
-      alert("STEP 7: Redirecting to Stripe...");
-      window.location.href = data.url;
-
-    } catch (e) {
-      alert("STEP X: Pay now failed => " + (e?.name ? `${e.name}: ` : "") + (e?.message || e));
-    }
-  }
-
-  function placeCOD(){
-    const total = state.cart.reduce((s,i)=> s + (i.unitPrice*i.qty), 0);
-    const lines = state.cart.map(i=>{
-      const n = (i.name[state.lang]||i.name.en);
-      const opt = i.options ? ` (${i.options.sizeLabel}, ${t("pieces")}: ${i.options.pieces})` : "";
-      return `- ${n}${opt} x${i.qty} = ${money(i.unitPrice*i.qty)}`;
-    }).join("%0A");
-
-    const msg = state.lang==="ar"
-      ? `طلب COD من متجر أزل%0A${lines}%0Aالإجمالي: ${money(total)}`
-      : `COD order from azl MG shop%0A${lines}%0ATotal: ${money(total)}`;
-
-    window.open(`https://wa.me/${COD_WHATSAPP}?text=${msg}`,"_blank","noopener");
-  }
-
-  $("#langBtn").addEventListener("click", ()=>{
-    state.lang = state.lang==="ar" ? "en" : "ar";
-    save(); applyLang();
-  });
-  $("#cartBtn").addEventListener("click", openCart);
-  $("#close").addEventListener("click", closeCart);
-  $("#back").addEventListener("click", closeCart);
-
-  // تأكيد أن الزر يستقبل click
-  $("#payBtn").addEventListener("click", () => {
-    alert("Pay Now clicked ✅");
-    payNow();
-  });
-
-  $("#codBtn").addEventListener("click", placeCOD);
-
-  applyLang();
 </script>
 </body>
 </html>
