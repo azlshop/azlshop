@@ -1,35 +1,40 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>متجر أزل | azl MG shop</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>متجر أزل | azl MG shop</title>
 
-<style>
-:root{--line:#e5e7eb;--muted:#6b7280;--dark:#111827}
-body{font-family:system-ui;margin:0;background:#fff;color:#111}
-header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:12px;z-index:10}
-.top{display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:900}
-.btn{border:1px solid var(--dark);background:var(--dark);color:#fff;border-radius:999px;padding:8px 14px;cursor:pointer}
-.ghost{background:#fff;color:#111;border:1px solid var(--line)}
-.wrap{max-width:1100px;margin:auto;padding:14px}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.card{border:1px solid var(--line);border-radius:14px;padding:12px}
-.muted{color:var(--muted);font-size:13px}
-.drawer{position:fixed;inset:0;pointer-events:none}
-.drawer.open{pointer-events:auto}
-.panel{position:absolute;inset-inline-end:0;top:0;bottom:0;width:360px;background:#fff;border-inline-start:1px solid var(--line);transform:translateX(110%);transition:.2s}
-.drawer.open .panel{transform:translateX(0)}
-.back{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0}
-.drawer.open .back{opacity:1;pointer-events:none}
-@media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
-</style>
+  <style>
+    :root{--line:#e5e7eb;--muted:#6b7280;--dark:#111827}
+    body{font-family:system-ui;margin:0;background:#fff;color:#111}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:12px;z-index:10}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .brand{font-weight:900}
+    .btn{border:1px solid var(--dark);background:var(--dark);color:#fff;border-radius:999px;padding:10px 14px;cursor:pointer}
+    .ghost{background:#fff;color:#111;border:1px solid var(--line)}
+    .wrap{max-width:1100px;margin:auto;padding:14px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .card{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .p{padding:12px;display:grid;gap:8px}
+    .muted{color:var(--muted);font-size:13px}
+    .img{height:140px;background:#f3f4f6}
+
+    .drawer{position:fixed;inset:0;pointer-events:none;z-index:9999}
+    .drawer.open{pointer-events:auto}
+    .panel{position:absolute;inset-inline-end:0;top:0;bottom:0;width:min(420px,92vw);background:#fff;
+      border-inline-start:1px solid var(--line);transform:translateX(110%);transition:.2s;z-index:2}
+    html[dir="ltr"] .panel{transform:translateX(-110%)}
+    .drawer.open .panel{transform:translateX(0)}
+    .back{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:.2s;z-index:1}
+    .drawer.open .back{opacity:1;pointer-events:none}
+
+    @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
+  </style>
 </head>
 
 <body>
-
 <header>
   <div class="top">
     <div class="brand" id="brand">متجر أزل</div>
@@ -38,7 +43,7 @@ header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line)
       <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
     </div>
   </div>
-  <div class="muted" id="hint">أحدث المنتجات</div>
+  <div class="muted" id="hint" style="margin-top:8px">أحدث المنتجات</div>
 </header>
 
 <main class="wrap">
@@ -46,114 +51,211 @@ header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line)
   <section class="grid" id="grid"></section>
 </main>
 
-<!-- Cart -->
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-hidden="true">
   <div class="panel">
-    <div class="card">
-      <b id="cartTitle">سلتك</b>
-      <div id="items"></div>
+    <div class="p">
+      <div class="row" style="justify-content:space-between">
+        <b id="cartTitle">سلتك</b>
+        <button class="btn ghost" id="closeBtn">✕</button>
+      </div>
+
+      <div id="items" class="p"></div>
+
       <div class="row" style="justify-content:space-between">
         <span id="totalLabel">الإجمالي</span>
         <b id="total">AED 0.00</b>
       </div>
+
       <div class="row">
         <button class="btn" id="payBtn">ادفع الآن</button>
-        <button class="btn ghost" id="codBtn">COD</button>
+        <button class="btn ghost" id="codBtn">الدفع عند الاستلام (COD)</button>
       </div>
+
+      <div class="muted" id="err" style="display:none"></div>
     </div>
   </div>
   <div class="back" id="back"></div>
 </aside>
 
 <script>
-const WORKER_URL="https://azlshop.eng-suwan.workers.dev";
-const COD_WHATSAPP="971544219984";
+  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
+  const COD_WHATSAPP = "971544219984";
 
-const dict={
- ar:{brand:"متجر أزل",hint:"أحدث المنتجات",cart:"سلتك",total:"الإجمالي",pay:"ادفع الآن",add:"أضف للسلة",all:"الكل",empty:"السلة فارغة"},
- en:{brand:"azl MG shop",hint:"Latest products",cart:"Your cart",total:"Total",pay:"Pay now",add:"Add to cart",all:"All",empty:"Cart is empty"}
-};
+  const dict = {
+    ar: { brand:"متجر أزل", hint:"أحدث المنتجات", cart:"سلتك", total:"الإجمالي", pay:"ادفع الآن", cod:"الدفع عند الاستلام (COD)",
+          add:"أضف للسلة", all:"الكل", empty:"السلة فارغة" },
+    en: { brand:"azl MG shop", hint:"Latest products", cart:"Your cart", total:"Total", pay:"Pay now", cod:"Cash on Delivery (COD)",
+          add:"Add to cart", all:"All", empty:"Cart is empty" }
+  };
 
-const state={
- lang:localStorage.getItem("azl_lang")||((navigator.language||"en").startsWith("ar")?"ar":"en"),
- cart:JSON.parse(localStorage.getItem("azl_cart")||"[]"),
- categories:[],products:[],activeCategory:"all"
-};
+  const $ = (s)=>document.querySelector(s);
+  const state = {
+    lang: localStorage.getItem("azl_lang") || ((navigator.language||"en").toLowerCase().startsWith("ar") ? "ar" : "en"),
+    cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
+    categories: [],
+    products: [],
+    activeCategory: "all"
+  };
 
-const $=s=>document.querySelector(s);
-const t=k=>dict[state.lang][k];
-const money=x=>`AED ${Number(x).toFixed(2)}`;
+  function t(k){ return dict[state.lang][k]; }
+  function money(x){ return `AED ${Number(x).toFixed(2)}`; }
+  function save(){ localStorage.setItem("azl_cart", JSON.stringify(state.cart)); localStorage.setItem("azl_lang", state.lang); }
+  function showErr(msg){
+    const el = $("#err");
+    el.style.display = msg ? "block" : "none";
+    el.textContent = msg || "";
+  }
 
-async function loadProducts(){
- const r=await fetch("/products.json",{cache:"no-store"});
- const d=await r.json();
- state.categories=d.categories;
- state.products=d.products;
-}
+  async function loadProducts(){
+    // تأكد أن products.json موجود بجانب index.html
+    const res = await fetch("/products.json", { cache: "no-store" });
+    if(!res.ok) throw new Error("products.json not found (HTTP " + res.status + ")");
+    const data = await res.json();
+    state.categories = Array.isArray(data.categories) ? data.categories : [];
+    state.products = Array.isArray(data.products) ? data.products : [];
+  }
 
-function applyLang(){
- document.documentElement.lang=state.lang;
- document.documentElement.dir=state.lang==="ar"?"rtl":"ltr";
- brand.textContent=t("brand");
- hint.textContent=t("hint");
- cartTitle.textContent=t("cart");
- totalLabel.textContent=t("total");
- payBtn.textContent=t("pay");
- langBtn.textContent=state.lang==="ar"?"EN":"AR";
- renderCategories();render();
-}
+  function applyLang(){
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir  = state.lang==="ar" ? "rtl" : "ltr";
+    $("#brand").textContent = t("brand");
+    $("#hint").textContent  = t("hint");
+    $("#cartTitle").textContent = t("cart");
+    $("#totalLabel").textContent = t("total");
+    $("#payBtn").textContent = t("pay");
+    $("#codBtn").textContent = t("cod");
+    $("#langBtn").textContent = state.lang==="ar" ? "EN" : "AR";
+  }
 
-function renderCategories(){
- cats.innerHTML=`
- <button class="btn ghost" onclick="setCat('all')">${t("all")}</button>
- ${state.categories.map(c=>`
- <button class="btn ghost" onclick="setCat('${c.id}')">${state.lang==="ar"?c.ar:c.en}</button>
- `).join("")}`;
-}
+  function renderCategories(){
+    $("#cats").innerHTML = `
+      <button class="btn ghost" data-cat="all">${t("all")}</button>
+      ${state.categories.map(c=>`
+        <button class="btn ghost" data-cat="${c.id}">${state.lang==="ar"?c.ar:c.en}</button>
+      `).join("")}
+    `;
+    $("#cats").querySelectorAll("button[data-cat]").forEach(b=>{
+      b.addEventListener("click", ()=>{ state.activeCategory = b.dataset.cat; renderProducts(); });
+    });
+  }
 
-function setCat(id){state.activeCategory=id;render();}
+  function renderProducts(){
+    const list = state.activeCategory==="all"
+      ? state.products
+      : state.products.filter(p => p.category === state.activeCategory);
 
-function render(){
- const list=state.activeCategory==="all"?state.products:state.products.filter(p=>p.category===state.activeCategory);
- grid.innerHTML=list.map(p=>`
- <div class="card">
-   <b>${p.name[state.lang]}</b>
-   <div class="muted">${money(p.price)}</div>
-   <button class="btn ghost" onclick="add('${p.id}')">${t("add")}</button>
- </div>`).join("");
- updateCart();
-}
+    $("#grid").innerHTML = list.map(p=>`
+      <article class="card">
+        <div class="img"></div>
+        <div class="p">
+          <b>${p.name?.[state.lang] || p.name?.en || "-"}</b>
+          <div class="muted">${money(p.price || 0)}</div>
+          <button class="btn ghost" data-add="${p.id}">${t("add")}</button>
+        </div>
+      </article>
+    `).join("");
 
-function add(id){
- const p=state.products.find(x=>x.id===id);
- const it=state.cart.find(x=>x.id===id);
- it?it.qty++:state.cart.push({id,qty:1,price:p.price,name:p.name});
- save();updateCart();
-}
+    document.querySelectorAll("button[data-add]").forEach(btn=>{
+      btn.addEventListener("click", ()=> addToCart(btn.dataset.add));
+    });
 
-function updateCart(){
- count.textContent=state.cart.reduce((s,i)=>s+i.qty,0);
- const total=state.cart.reduce((s,i)=>s+i.qty*i.price,0);
- totalEl.textContent=money(total);
- items.innerHTML=state.cart.length?state.cart.map(i=>`${i.name[state.lang]} × ${i.qty}`).join("<br>"):`<div class="muted">${t("empty")}</div>`;
-}
+    updateCartUI();
+  }
 
-function save(){localStorage.setItem("azl_cart",JSON.stringify(state.cart));}
+  function addToCart(id){
+    const p = state.products.find(x=>x.id===id);
+    if(!p) return;
+    const it = state.cart.find(x=>x.id===id);
+    if(it) it.qty++;
+    else state.cart.push({ id, qty:1, price:Number(p.price||0), name:p.name });
+    save(); updateCartUI();
+  }
 
-cartBtn.onclick=()=>drawer.classList.add("open");
-back.onclick=()=>drawer.classList.remove("open");
-langBtn.onclick=()=>{state.lang=state.lang==="ar"?"en":"ar";localStorage.setItem("azl_lang",state.lang);applyLang();};
+  function updateCartUI(){
+    $("#count").textContent = state.cart.reduce((s,i)=>s+i.qty,0);
+    const total = state.cart.reduce((s,i)=> s + (i.price*i.qty), 0);
+    $("#total").textContent = money(total);
 
-payBtn.onclick=async()=>{
- if(!state.cart.length)return;
- const items=state.cart.map(i=>({name:i.name[state.lang],unit_amount:i.price,quantity:i.qty}));
- const r=await fetch(`${WORKER_URL}/create-checkout-session`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({currency:"AED",lang:state.lang,items})});
- const d=await r.json();location.href=d.url;
-};
+    const box = $("#items");
+    if(!state.cart.length){
+      box.innerHTML = `<div class="muted">${t("empty")}</div>`;
+      return;
+    }
+    box.innerHTML = state.cart.map(i=>`
+      <div class="card" style="margin-bottom:10px">
+        <div class="p">
+          <b>${(i.name?.[state.lang] || i.name?.en || "-")}</b>
+          <div class="row" style="justify-content:space-between">
+            <span>${money(i.price)} × ${i.qty}</span>
+            <span class="muted">${money(i.price*i.qty)}</span>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
 
-codBtn.onclick=()=>open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent("طلب COD")}`,"_blank");
+  function openCart(){ $("#drawer").classList.add("open"); }
+  function closeCart(){ $("#drawer").classList.remove("open"); }
 
-loadProducts().then(applyLang);
+  async function payNow(){
+    try{
+      showErr("");
+      if(!state.cart.length){ openCart(); return; }
+
+      const items = state.cart.map(i=>({
+        name: String((i.name?.[state.lang] || i.name?.en || "Item")),
+        unit_amount: Number(i.price),
+        quantity: Number(i.qty)
+      }));
+
+      const res = await fetch(`${WORKER_URL}/create-checkout-session`,{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ currency:"AED", lang: state.lang, items })
+      });
+
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data.error || ("Worker error " + res.status));
+      if(!data.url) throw new Error("No checkout URL returned");
+      location.href = data.url;
+    } catch(e){
+      showErr("Payment error: " + (e?.message || e));
+      alert("Payment error: " + (e?.message || e));
+    }
+  }
+
+  function placeCOD(){
+    const lines = state.cart.map(i => `${(i.name?.[state.lang] || i.name?.en || "-")} x${i.qty}`).join("\n");
+    const msg = state.lang==="ar"
+      ? `طلب COD من متجر أزل\n${lines}`
+      : `COD order from azl MG shop\n${lines}`;
+    window.open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
+  }
+
+  // events
+  $("#langBtn").addEventListener("click", ()=>{
+    state.lang = state.lang==="ar" ? "en" : "ar";
+    save(); applyLang(); renderCategories(); renderProducts();
+  });
+  $("#cartBtn").addEventListener("click", openCart);
+  $("#back").addEventListener("click", closeCart);
+  $("#closeBtn").addEventListener("click", closeCart);
+  $("#payBtn").addEventListener("click", payNow);
+  $("#codBtn").addEventListener("click", placeCOD);
+
+  // boot
+  (async ()=>{
+    try{
+      await loadProducts();
+      applyLang();
+      renderCategories();
+      renderProducts();
+    } catch(e){
+      applyLang();
+      showErr("Load error: " + (e?.message || e));
+      $("#grid").innerHTML = `<div class="muted">Load error: ${(e?.message||e)}</div>`;
+    }
+  })();
 </script>
 </body>
 </html>
