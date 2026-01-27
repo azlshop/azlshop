@@ -1,41 +1,42 @@
 {
   "categories": [
-    { "id": "print", "ar": "طباعة", "en": "Print" },
-    { "id": "gifts", "ar": "هدايا", "en": "Gifts" },
-    { "id": "frames", "ar": "لوحات", "en": "Frames" }
+    { "id": "print",  "ar": "طباعة", "en": "Print" },
+    { "id": "gifts",  "ar": "هدايا", "en": "Gifts" },
+    { "id": "frames", "ar": "إطارات", "en": "Frames" }
   ],
   "products": [
     {
       "id": "p1",
       "category": "print",
+      "type": "simple",
       "name": { "ar": "طباعة صورة", "en": "Photo Print" },
       "price": 49
     },
     {
       "id": "p2",
       "category": "gifts",
+      "type": "simple",
       "name": { "ar": "هدية مميزة", "en": "Special Gift" },
       "price": 79
     },
     {
       "id": "p3",
       "category": "frames",
-      "name": { "ar": "لوحة حائط", "en": "Wall Frame" },
+      "type": "simple",
+      "name": { "ar": "إطار حائط", "en": "Wall Frame" },
       "price": 120
     },
 
     {
-      "id": "p4",
+      "id": "mag1",
       "category": "print",
+      "type": "magnetic_print",
       "name": { "ar": "صورة مغناطيسية", "en": "Magnetic Photo" },
-      "options": {
-        "size": [
-          { "key": "s5", "ar": "5×5 سم", "en": "5×5 cm", "price": 49 },
-          { "key": "s7", "ar": "7×7 سم", "en": "7×7 cm", "price": 69 }
-        ],
-        "pieces": [4, 6, 8, 12],
-        "upload_required": true
-      }
+      "sizes": [
+        { "key": "5x5", "ar": "5×5 سم", "en": "5×5 cm", "price": 49 },
+        { "key": "7x7", "ar": "7×7 سم", "en": "7×7 cm", "price": 59 }
+      ],
+      "pieces": [4, 6, 8, 12]
     }
   ]
 }
