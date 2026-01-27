@@ -22,6 +22,9 @@
     .drawer{position:fixed;inset:0;pointer-events:none}
     .drawer.open{pointer-events:auto}
     .panel{position:absolute;inset-inline-end:0;top:0;bottom:0;width:min(420px,92vw);background:#fff;border-inline-start:1px solid var(--line);transform:translateX(110%);transition:.2s}
+    .panel{ z-index: 2; }
+.back{ z-index: 1; }
+.drawer{ z-index: 9999; }
     html[dir="ltr"] .panel{transform:translateX(-110%)}
     .drawer.open .panel{transform:translateX(0)}
     .back{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:.2s}
@@ -306,4 +309,5 @@ $("#payBtn").addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
