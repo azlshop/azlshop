@@ -10,6 +10,13 @@
       "category": "print",
       "name": { "ar": "طباعة صورة", "en": "Photo Print" },
       "price": 49
+      {
+  "id": "p1",
+  "category": "print",
+  "name": { "ar": "طباعة صورة", "en": "Photo Print" },
+  "price": 49,
+  "image": "https://your-domain.com/images/p1.jpg"
+}
     },
     {
       "id": "p2",
@@ -29,4 +36,5 @@
   "name": { "ar": "هدية فاخرة", "en": "Luxury Gift" },
   "price": 150
 }
+
 
