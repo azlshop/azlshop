@@ -296,10 +296,14 @@
   $("#cartBtn").addEventListener("click", openCart);
   $("#close").addEventListener("click", closeCart);
   $("#back").addEventListener("click", closeCart);
-  $("#payBtn").addEventListener("click", payNow);
+$("#payBtn").addEventListener("click", () => {
+  alert("Pay Now clicked ✅");
+  payNow();
+});
   $("#codBtn").addEventListener("click", placeCOD);
 
   applyLang();
 </script>
 </body>
 </html>
+
