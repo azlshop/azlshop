@@ -22,6 +22,11 @@
       "category": "frames",
       "name": { "ar": "لوحة حائط", "en": "Wall Frame" },
       "price": 120
-    }
-  ]
+    },
+{
+  "id": "p4",
+  "category": "gifts",
+  "name": { "ar": "هدية فاخرة", "en": "Luxury Gift" },
+  "price": 150
 }
+
