@@ -232,7 +232,48 @@ const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
   function openCart(){ $("#drawer").classList.add("open"); }
   function closeCart(){ $("#drawer").classList.remove("open"); }
 
-  async function payNow(){
+async function payNow(){
+  try {
+    if(!state.cart.length){ openCart(); return; }
+
+    const items = state.cart.map(i => {
+      const opt = i.options
+        ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}`
+        : "";
+      return {
+        name: String((i.name[state.lang] || i.name.en) + opt),
+        unit_amount: Number(i.unitPrice),
+        quantity: Number(i.qty)
+      };
+    });
+
+    const url = `${WORKER_URL}/create-checkout-session`;
+    const res = await fetch(url, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ lang: state.lang, currency:"AED", items })
+    });
+
+    // حاول تقرأ JSON، وإذا فشل اقرأ نص
+    let data = null;
+    const text = await res.text();
+    try { data = JSON.parse(text); } catch { data = { raw: text }; }
+
+    if(!res.ok){
+      alert(`Worker error (${res.status}): ` + (data.error || data.raw || "Unknown error"));
+      return;
+    }
+
+    if(!data.url){
+      alert("Worker returned no checkout url. Response: " + JSON.stringify(data));
+      return;
+    }
+
+    window.location.href = data.url;
+  } catch (e) {
+    alert("Pay now failed: " + (e?.message || e));
+  }
+}
     if(!state.cart.length){ openCart(); return; }
 
     // Stripe line items (السعر حسب الحجم)
@@ -282,5 +323,6 @@ const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
 </script>
 </body>
 </html>
+
 
 
