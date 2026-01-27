@@ -77,9 +77,10 @@
 </aside>
 
 <script>
-  // 1) ضع رابط الـ Worker لاحقًا (بعد ما تنشئه)
-const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
-  // 2) رقم COD واتساب (جاهز)
+  // Worker API (Stripe)
+  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
+
+  // COD WhatsApp
   const COD_WHATSAPP = "971544219984";
 
   const dict = {
@@ -97,7 +98,6 @@ const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
   const state = {
     lang: localStorage.getItem("azl_lang") || detectDeviceLang(),
     cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
-    // منتجات مبدئية (لاحقاً سنجعلها من ملف products.json لتضيف بنفسك)
     products: [
       {
         id:"p1", cat:"print",
@@ -142,8 +142,10 @@ const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
     render();
   }
 
-  function add(id){
+  // Make add() available for inline onclick
+  window.add = function add(id){
     const p = state.products.find(x=>x.id===id);
+    if(!p) return;
 
     if (p.options?.size?.length){
       const sizeKey = document.getElementById(`size_${id}`)?.value;
@@ -232,66 +234,44 @@ const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
   function openCart(){ $("#drawer").classList.add("open"); }
   function closeCart(){ $("#drawer").classList.remove("open"); }
 
-async function payNow(){
-  try {
-    if(!state.cart.length){ openCart(); return; }
+  async function payNow(){
+    try {
+      if(!state.cart.length){ openCart(); return; }
 
-    const items = state.cart.map(i => {
-      const opt = i.options
-        ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}`
-        : "";
-      return {
-        name: String((i.name[state.lang] || i.name.en) + opt),
-        unit_amount: Number(i.unitPrice),
-        quantity: Number(i.qty)
-      };
-    });
+      const items = state.cart.map(i => {
+        const opt = i.options
+          ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}`
+          : "";
+        return {
+          name: String((i.name[state.lang] || i.name.en) + opt),
+          unit_amount: Number(i.unitPrice),
+          quantity: Number(i.qty)
+        };
+      });
 
-    const url = `${WORKER_URL}/create-checkout-session`;
-    const res = await fetch(url, {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ lang: state.lang, currency:"AED", items })
-    });
+      const res = await fetch(`${WORKER_URL}/create-checkout-session`,{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ lang: state.lang, currency:"AED", items })
+      });
 
-    // حاول تقرأ JSON، وإذا فشل اقرأ نص
-    let data = null;
-    const text = await res.text();
-    try { data = JSON.parse(text); } catch { data = { raw: text }; }
+      const text = await res.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch { data = { raw: text }; }
 
-    if(!res.ok){
-      alert(`Worker error (${res.status}): ` + (data.error || data.raw || "Unknown error"));
-      return;
+      if(!res.ok){
+        alert(`Worker error (${res.status}): ` + (data.error || data.raw || "Unknown error"));
+        return;
+      }
+      if(!data.url){
+        alert("Worker returned no checkout url. Response: " + JSON.stringify(data));
+        return;
+      }
+
+      window.location.href = data.url;
+    } catch (e) {
+      alert("Pay now failed: " + (e?.message || e));
     }
-
-    if(!data.url){
-      alert("Worker returned no checkout url. Response: " + JSON.stringify(data));
-      return;
-    }
-
-    window.location.href = data.url;
-  } catch (e) {
-    alert("Pay now failed: " + (e?.message || e));
-  }
-}
-    if(!state.cart.length){ openCart(); return; }
-
-    // Stripe line items (السعر حسب الحجم)
-    const items = state.cart.map(i => {
-      const opt = i.options ? ` — ${t("size")}: ${i.options.sizeLabel} — ${t("pieces")}: ${i.options.pieces}` : "";
-      return { name: (i.name[state.lang]||i.name.en) + opt, unit_amount: i.unitPrice, quantity: i.qty };
-    });
-
-    const res = await fetch(`${WORKER_URL}/create-checkout-session`,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ lang: state.lang, currency:"AED", items })
-    });
-    const data = await res.json();
-    if(!res.ok){ alert(data.error || "Error"); return; }
-
-    // redirect to Stripe-hosted Checkout
-    window.location.href = data.url;
   }
 
   function placeCOD(){
@@ -323,6 +303,3 @@ async function payNow(){
 </script>
 </body>
 </html>
-
-
-
