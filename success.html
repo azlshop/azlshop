@@ -1,25 +1,39 @@
-<!doctype html><html><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Success</title></head>
-<body style="font-family:system-ui;margin:20px">
-<h2 id="h">Success</h2><div id="box">Loading...</div>
-<script>
-const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
-const u=new URL(location.href);
-const sid=u.searchParams.get("session_id");
-const lang=u.searchParams.get("lang") || ((navigator.language||"en").toLowerCase().startsWith("ar")?"ar":"en");
-document.documentElement.lang=lang;
-document.documentElement.dir=(lang==="ar")?"rtl":"ltr";
-document.getElementById("h").textContent=(lang==="ar")?"تم الدفع بنجاح ✅":"Payment successful ✅";
-(async()=>{
-  const r=await fetch(`${WORKER_URL}/retrieve-session?session_id=${encodeURIComponent(sid)}`);
-  const d=await r.json();
-  if(!r.ok){ document.getElementById("box").textContent=d.error||"Error"; return; }
-  document.getElementById("box").innerHTML = `
-    <p><b>${lang==="ar"?"الحالة":"Status"}:</b> ${d.payment_status}</p>
-    <p><b>${lang==="ar"?"المبلغ":"Amount"}:</b> ${(d.amount_total/100).toFixed(2)} ${String(d.currency).toUpperCase()}</p>
-  `;
-})();
-</script>
-</body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>تم الدفع بنجاح</title>
+  <style>
+    body{font-family:system-ui;margin:0;padding:24px;background:#fff}
+    .card{max-width:560px;margin:0 auto;border:1px solid #e5e7eb;border-radius:16px;padding:18px}
+    .btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:999px;border:1px solid #111;background:#111;color:#fff;text-decoration:none}
+    .muted{color:#6b7280;font-size:13px;line-height:1.6}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="h">تم الدفع بنجاح ✅</h2>
+    <p id="p" class="muted">شكراً لك. تم استلام طلبك.</p>
+    <p class="muted"><b>Session ID:</b> <span id="sid">-</span></p>
+    <a class="btn" href="/index.html" id="b">العودة للمتجر</a>
+  </div>
 
+<script>
+  const q = new URLSearchParams(location.search);
+  const lang = (q.get("lang") === "en") ? "en" : "ar";
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==="ar" ? "rtl" : "ltr";
+
+  const sid = q.get("session_id") || "-";
+  document.getElementById("sid").textContent = sid;
+
+  if(lang==="en"){
+    document.title = "Payment successful";
+    document.getElementById("h").textContent = "Payment successful ✅";
+    document.getElementById("p").textContent = "Thank you. Your order has been received.";
+    document.getElementById("b").textContent = "Back to shop";
+  }
+</script>
+</body>
+</html>
