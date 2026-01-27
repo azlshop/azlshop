@@ -1,38 +1,159 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>تم الدفع بنجاح</title>
-  <style>
-    body{font-family:system-ui;margin:0;padding:24px}
-    .card{max-width:520px;margin:0 auto;border:1px solid #e5e7eb;border-radius:16px;padding:18px}
-    .btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:999px;border:1px solid #111;background:#111;color:#fff;text-decoration:none}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>متجر أزل | azl MG shop</title>
+
+<style>
+:root{--line:#e5e7eb;--muted:#6b7280;--dark:#111827}
+body{font-family:system-ui;margin:0;background:#fff;color:#111}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:12px;z-index:10}
+.top{display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:900}
+.btn{border:1px solid var(--dark);background:var(--dark);color:#fff;border-radius:999px;padding:8px 14px;cursor:pointer}
+.ghost{background:#fff;color:#111;border:1px solid var(--line)}
+.wrap{max-width:1100px;margin:auto;padding:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{border:1px solid var(--line);border-radius:14px;padding:12px}
+.muted{color:var(--muted);font-size:13px}
+.drawer{position:fixed;inset:0;pointer-events:none}
+.drawer.open{pointer-events:auto}
+.panel{position:absolute;inset-inline-end:0;top:0;bottom:0;width:360px;background:#fff;border-inline-start:1px solid var(--line);transform:translateX(110%);transition:.2s}
+.drawer.open .panel{transform:translateX(0)}
+.back{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0}
+.drawer.open .back{opacity:1;pointer-events:none}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h2 id="h">تم الدفع بنجاح ✅</h2>
-    <p id="p">شكراً لك. تم استلام طلبك.</p>
-    <p><b>Session ID:</b> <span id="sid">-</span></p>
-    <a class="btn" href="/index.html" id="b">العودة للمتجر</a>
+
+<header>
+  <div class="top">
+    <div class="brand" id="brand">متجر أزل</div>
+    <div class="row">
+      <button class="btn ghost" id="langBtn">EN</button>
+      <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
+    </div>
   </div>
+  <div class="muted" id="hint">أحدث المنتجات</div>
+</header>
+
+<main class="wrap">
+  <div class="row" id="cats" style="margin-bottom:12px"></div>
+  <section class="grid" id="grid"></section>
+</main>
+
+<!-- Cart -->
+<aside class="drawer" id="drawer">
+  <div class="panel">
+    <div class="card">
+      <b id="cartTitle">سلتك</b>
+      <div id="items"></div>
+      <div class="row" style="justify-content:space-between">
+        <span id="totalLabel">الإجمالي</span>
+        <b id="total">AED 0.00</b>
+      </div>
+      <div class="row">
+        <button class="btn" id="payBtn">ادفع الآن</button>
+        <button class="btn ghost" id="codBtn">COD</button>
+      </div>
+    </div>
+  </div>
+  <div class="back" id="back"></div>
+</aside>
 
 <script>
-  const q = new URLSearchParams(location.search);
-  const lang = (q.get("lang") === "en") ? "en" : "ar";
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang==="ar" ? "rtl" : "ltr";
+const WORKER_URL="https://azlshop.eng-suwan.workers.dev";
+const COD_WHATSAPP="971544219984";
 
-  const sid = q.get("session_id") || "-";
-  document.getElementById("sid").textContent = sid;
+const dict={
+ ar:{brand:"متجر أزل",hint:"أحدث المنتجات",cart:"سلتك",total:"الإجمالي",pay:"ادفع الآن",add:"أضف للسلة",all:"الكل",empty:"السلة فارغة"},
+ en:{brand:"azl MG shop",hint:"Latest products",cart:"Your cart",total:"Total",pay:"Pay now",add:"Add to cart",all:"All",empty:"Cart is empty"}
+};
 
-  if(lang==="en"){
-    document.title = "Payment successful";
-    document.getElementById("h").textContent = "Payment successful ✅";
-    document.getElementById("p").textContent = "Thank you. Your order has been received.";
-    document.getElementById("b").textContent = "Back to shop";
-  }
+const state={
+ lang:localStorage.getItem("azl_lang")||((navigator.language||"en").startsWith("ar")?"ar":"en"),
+ cart:JSON.parse(localStorage.getItem("azl_cart")||"[]"),
+ categories:[],products:[],activeCategory:"all"
+};
+
+const $=s=>document.querySelector(s);
+const t=k=>dict[state.lang][k];
+const money=x=>`AED ${Number(x).toFixed(2)}`;
+
+async function loadProducts(){
+ const r=await fetch("/products.json",{cache:"no-store"});
+ const d=await r.json();
+ state.categories=d.categories;
+ state.products=d.products;
+}
+
+function applyLang(){
+ document.documentElement.lang=state.lang;
+ document.documentElement.dir=state.lang==="ar"?"rtl":"ltr";
+ brand.textContent=t("brand");
+ hint.textContent=t("hint");
+ cartTitle.textContent=t("cart");
+ totalLabel.textContent=t("total");
+ payBtn.textContent=t("pay");
+ langBtn.textContent=state.lang==="ar"?"EN":"AR";
+ renderCategories();render();
+}
+
+function renderCategories(){
+ cats.innerHTML=`
+ <button class="btn ghost" onclick="setCat('all')">${t("all")}</button>
+ ${state.categories.map(c=>`
+ <button class="btn ghost" onclick="setCat('${c.id}')">${state.lang==="ar"?c.ar:c.en}</button>
+ `).join("")}`;
+}
+
+function setCat(id){state.activeCategory=id;render();}
+
+function render(){
+ const list=state.activeCategory==="all"?state.products:state.products.filter(p=>p.category===state.activeCategory);
+ grid.innerHTML=list.map(p=>`
+ <div class="card">
+   <b>${p.name[state.lang]}</b>
+   <div class="muted">${money(p.price)}</div>
+   <button class="btn ghost" onclick="add('${p.id}')">${t("add")}</button>
+ </div>`).join("");
+ updateCart();
+}
+
+function add(id){
+ const p=state.products.find(x=>x.id===id);
+ const it=state.cart.find(x=>x.id===id);
+ it?it.qty++:state.cart.push({id,qty:1,price:p.price,name:p.name});
+ save();updateCart();
+}
+
+function updateCart(){
+ count.textContent=state.cart.reduce((s,i)=>s+i.qty,0);
+ const total=state.cart.reduce((s,i)=>s+i.qty*i.price,0);
+ totalEl.textContent=money(total);
+ items.innerHTML=state.cart.length?state.cart.map(i=>`${i.name[state.lang]} × ${i.qty}`).join("<br>"):`<div class="muted">${t("empty")}</div>`;
+}
+
+function save(){localStorage.setItem("azl_cart",JSON.stringify(state.cart));}
+
+cartBtn.onclick=()=>drawer.classList.add("open");
+back.onclick=()=>drawer.classList.remove("open");
+langBtn.onclick=()=>{state.lang=state.lang==="ar"?"en":"ar";localStorage.setItem("azl_lang",state.lang);applyLang();};
+
+payBtn.onclick=async()=>{
+ if(!state.cart.length)return;
+ const items=state.cart.map(i=>({name:i.name[state.lang],unit_amount:i.price,quantity:i.qty}));
+ const r=await fetch(`${WORKER_URL}/create-checkout-session`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({currency:"AED",lang:state.lang,items})});
+ const d=await r.json();location.href=d.url;
+};
+
+codBtn.onclick=()=>open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent("طلب COD")}`,"_blank");
+
+loadProducts().then(applyLang);
 </script>
 </body>
 </html>
