@@ -1,280 +1,726 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>azl MG shop</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>متجر أزل | azl MG shop</title>
 
-<style>
-:root{
-  --dark:#111;
-  --line:#e5e7eb;
-  --bg:#f6f7fb;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui;
-  background:var(--bg);
-}
+  <style>
+    :root{
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --line:#e6e8ef;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --dark:#0b1220;
+      --shadow: 0 10px 30px rgba(2,8,23,.06);
+      --r:16px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:var(--text)}
+    a{color:inherit}
 
-/* ===== HEADER ===== */
-header{
-  background:#fff;
-  border-bottom:1px solid var(--line);
-  padding:12px 16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.brand{font-weight:800}
-.btn{
-  padding:6px 12px;
-  border-radius:20px;
-  border:1px solid var(--dark);
-  background:var(--dark);
-  color:#fff;
-  cursor:pointer;
-}
-.ghost{
-  background:#fff;
-  color:#111;
-  border:1px solid var(--line);
-}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.9);
+      backdrop-filter:saturate(140%) blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .wrap{max-width:1150px;margin:0 auto;padding:14px}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:900;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:12px;background:var(--dark);
+      box-shadow:var(--shadow);
+    }
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--line);background:#fff;color:var(--text);
+      border-radius:999px;padding:10px 14px;cursor:pointer;
+      box-shadow: 0 6px 18px rgba(2,8,23,.05);
+    }
+    .pill.dark{background:var(--dark);color:#fff;border-color:var(--dark)}
+    .pill:active{transform:translateY(1px)}
+    .hint{color:var(--muted);font-size:13px;margin-top:8px}
 
-/* ===== PRODUCTS ===== */
-.wrap{max-width:1200px;margin:auto;padding:20px}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
-}
-.card{
-  background:#fff;
-  border-radius:16px;
-  padding:14px;
-  border:1px solid var(--line);
-}
-.img{
-  height:140px;
-  background:#ececec;
-  border-radius:12px;
-}
-.price{margin:10px 0;font-weight:700}
+    .hero{
+      margin-top:14px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .hero h3{margin:0;font-size:18px}
+    .hero p{margin:4px 0 0 0;color:var(--muted);font-size:13px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;
+      border:1px solid var(--line);background:#fff;
+      padding:8px 10px;border-radius:999px;font-size:12px;color:var(--muted);
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:#22c55e}
+    .dot.gray{background:#a3a3a3}
+    .dot.purple{background:#a855f7}
 
-/* ===== DRAWER ===== */
-.drawer{
-  position:fixed;
-  inset:0;
-  display:none;
-  z-index:9999;
-}
-.drawer.open{display:block}
+    .cats{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .catBtn{
+      border:1px solid var(--line);
+      background:#fff;color:var(--text);
+      border-radius:999px;padding:10px 12px;cursor:pointer;
+    }
+    .catBtn.active{background:var(--dark);border-color:var(--dark);color:#fff}
 
-.back{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  z-index:1;
-}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 
-.panel{
-  position:absolute;
-  top:0;
-  bottom:0;
-  right:0;
-  width:380px;
-  background:#fff;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;flex-direction:column;
+      min-height:310px;
+    }
+    .img{height:140px;background:linear-gradient(135deg,#f1f5f9,#ffffff)}
+    .p{padding:12px;display:grid;gap:10px}
+    .name{font-weight:800}
+    .price{font-weight:900}
+    .sub{color:var(--muted);font-size:12px}
+    select,input[type="number"],input[type="text"]{
+      width:100%;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:#fff;
+      outline:none;
+    }
+    input[type="file"]{
+      width:100%;
+      padding:10px 12px;border-radius:14px;border:1px dashed #cbd5e1;background:#fff;
+    }
+    .addBtn{
+      margin-top:auto;
+      width:100%;
+      border:1px solid var(--dark);
+      background:var(--dark);
+      color:#fff;border-radius:999px;padding:12px 14px;cursor:pointer;
+    }
+    .addBtn.ghost{background:#fff;color:var(--text);border-color:var(--line)}
+    .addBtn:active{transform:translateY(1px)}
 
-/* FIX X */
-.head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px;
-  border-bottom:1px solid var(--line);
-  position:relative;
-  z-index:5;
-}
-#closeBtn{
-  font-size:20px;
-  border:none;
-  background:none;
-  cursor:pointer;
-  z-index:99999;
-  pointer-events:auto;
-}
+    /* Drawer / Cart */
+    .drawer{position:fixed;inset:0;z-index:9999;display:none}
+    .drawer.open{display:block}
+    .back{
+      position:absolute;inset:0;background:rgba(15,23,42,.45);
+      pointer-events:auto; /* مهم جداً */
+    }
+    .panel{
+      position:absolute;top:0;bottom:0;inset-inline-end:0;
+      width:min(460px,92vw);
+      background:#fff;border-inline-start:1px solid var(--line);
+      box-shadow: -20px 0 40px rgba(2,8,23,.08);
+      display:flex;flex-direction:column;
+      pointer-events:auto;
+    }
+    html[dir="ltr"] .panel{inset-inline-end:auto;inset-inline-start:0;border-inline-start:none;border-inline-end:1px solid var(--line)}
+    .panelHead{
+      padding:14px;border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .panelTitle{font-weight:900}
+    .iconBtn{
+      width:38px;height:38px;border-radius:999px;border:1px solid var(--line);
+      background:#fff;cursor:pointer;
+    }
+    .panelBody{padding:14px;overflow:auto;flex:1}
+    .panelFoot{
+      padding:14px;border-top:1px solid var(--line);
+      display:grid;gap:10px;background:#fff;
+    }
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .total{font-weight:900}
+    .payRow{display:flex;gap:10px;flex-wrap:wrap}
+    .warn{color:#b45309;font-size:12px}
+    .err{color:#b91c1c;font-size:12px}
 
-.items{flex:1;overflow:auto;padding:12px}
-
-/* ===== CART ITEM ===== */
-.cart-item{
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:10px;
-  margin-bottom:10px;
-}
-.row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:6px;
-}
-.qty-box{
-  display:flex;
-  align-items:center;
-  gap:4px;
-}
-.qty-box button{
-  width:26px;
-  height:26px;
-  border-radius:50%;
-  border:1px solid var(--line);
-  background:#fff;
-  cursor:pointer;
-}
-.qty-box input{
-  width:40px;
-  text-align:center;
-}
-.remove{
-  border:1px solid red;
-  color:red;
-  background:#fff;
-  border-radius:14px;
-  padding:2px 8px;
-  cursor:pointer;
-}
-
-/* ===== FOOT ===== */
-.foot{
-  border-top:1px solid var(--line);
-  padding:12px;
-}
-.total{font-weight:800;margin-bottom:10px}
-</style>
+    .cartItem{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      display:grid;gap:8px;
+      margin-bottom:10px;
+    }
+    .ciTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .ciName{font-weight:800}
+    .ciMeta{color:var(--muted);font-size:12px}
+    .ciPrice{font-weight:900;white-space:nowrap}
+    .qtyRow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .miniBtn{
+      width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;
+    }
+    .qtyInput{
+      width:86px;text-align:center;border-radius:999px;
+    }
+    .delBtn{
+      border:1px solid #fecaca;background:#fff;color:#dc2626;border-radius:999px;padding:8px 10px;cursor:pointer;
+      font-weight:700;
+    }
+  </style>
 </head>
 
 <body>
-
 <header>
-  <div class="brand">azl MG shop</div>
-  <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div id="brandText">متجر أزل</div>
+          <div class="hint" id="hint">أحدث المنتجات</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="pill" id="langBtn">EN</button>
+        <button class="pill" id="cartBtn">🛒 <span id="count">0</span></button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h3 id="heroTitle">تجربة تسوق سريعة ومرتبة</h3>
+        <p id="heroSub">اختر قسم، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.</p>
+        <div class="chips" style="margin-top:10px">
+          <span class="chip"><span class="dot"></span><span id="c1">دفع آمن</span></span>
+          <span class="chip"><span class="dot purple"></span><span id="c2">COD متاح</span></span>
+          <span class="chip"><span class="dot gray"></span><span id="c3">عربي/إنجليزي تلقائي</span></span>
+        </div>
+      </div>
+      <div class="cats" id="cats"></div>
+    </div>
+  </div>
 </header>
 
-<main class="wrap">
-  <section class="grid">
-    <div class="card">
-      <div class="img"></div>
-      <h4>طباعة صورة</h4>
-      <div class="price">AED 49.00</div>
-      <button class="btn ghost" onclick="addItem('طباعة صورة',49)">أضف للسلة</button>
-    </div>
-
-    <div class="card">
-      <div class="img"></div>
-      <h4>هدية مميزة</h4>
-      <div class="price">AED 79.00</div>
-      <button class="btn ghost" onclick="addItem('هدية مميزة',79)">أضف للسلة</button>
-    </div>
-
-    <div class="card">
-      <div class="img"></div>
-      <h4>إطار حائط</h4>
-      <div class="price">AED 120.00</div>
-      <button class="btn ghost" onclick="addItem('إطار حائط',120)">أضف للسلة</button>
-    </div>
-  </section>
+<main class="wrap" style="padding-top:14px">
+  <section class="grid" id="grid"></section>
 </main>
 
-<!-- ===== CART ===== -->
-<aside class="drawer" id="drawer">
-  <div class="back" onclick="closeCart()"></div>
+<!-- Cart Drawer -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="back" id="back"></div>
 
-  <div class="panel">
-    <div class="head">
-      <b>سلتك</b>
-      <button id="closeBtn">✕</button>
+  <div class="panel" role="dialog" aria-modal="true" aria-label="Cart">
+    <div class="panelHead">
+      <div class="panelTitle" id="cartTitle">سلتك</div>
+      <button class="iconBtn" id="closeBtn" aria-label="Close">✕</button>
     </div>
 
-    <div class="items" id="items"></div>
+    <div class="panelBody">
+      <div id="items"></div>
+      <div class="err" id="cartErr" style="display:none"></div>
+    </div>
 
-    <div class="foot">
-      <div class="total">الإجمالي: <span id="total">AED 0.00</span></div>
-      <button class="btn" onclick="alert('Stripe لاحقًا')">ادفع الآن</button>
-      <button class="btn ghost" onclick="alert('COD واتساب')">COD</button>
+    <div class="panelFoot">
+      <div class="row">
+        <span id="totalLabel">الإجمالي</span>
+        <span class="total" id="total">AED 0.00</span>
+      </div>
+
+      <div class="payRow">
+        <button class="pill dark" id="payBtn" style="flex:1">ادفع الآن</button>
+        <button class="pill" id="codBtn" style="flex:1">الدفع عند الاستلام (COD)</button>
+      </div>
+
+      <div class="warn" id="note">
+        للطلبات التي تتطلب صور (المغناطيس): تأكد أن عدد الصور يساوي عدد القطع.
+      </div>
     </div>
   </div>
 </aside>
 
 <script>
-let cart=[];
+  // ✅ Stripe Worker Endpoint (server-side creates Checkout Session then returns url)
+  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
+  const COD_WHATSAPP = "971544219984";
 
-function openCart(){
-  document.getElementById("drawer").classList.add("open");
-}
-function closeCart(){
-  document.getElementById("drawer").classList.remove("open");
-}
+  const dict = {
+    ar: {
+      brand:"متجر أزل",
+      hint:"أحدث المنتجات",
+      heroTitle:"تجربة تسوق سريعة ومرتبة",
+      heroSub:"اختر قسم، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.",
+      c1:"دفع آمن", c2:"COD متاح", c3:"عربي/إنجليزي تلقائي",
+      all:"الكل",
+      cart:"سلتك",
+      total:"الإجمالي",
+      pay:"ادفع الآن",
+      cod:"الدفع عند الاستلام (COD)",
+      add:"أضف للسلة",
+      empty:"السلة فارغة",
+      size:"الحجم",
+      pieces:"عدد القطع",
+      upload:"ارفع الصور للطباعة",
+      filesNeed:"لازم ترفع صور بعدد يساوي عدد القطع.",
+      remove:"حذف",
+      qty:"الكمية",
+      loadErr:"خطأ تحميل المنتجات: "
+    },
+    en: {
+      brand:"azl MG shop",
+      hint:"Latest products",
+      heroTitle:"Clean & fast shopping experience",
+      heroSub:"Pick a category, add to cart, then pay via Stripe or place COD via WhatsApp.",
+      c1:"Secure payments", c2:"COD available", c3:"Auto Arabic/English",
+      all:"All",
+      cart:"Your cart",
+      total:"Total",
+      pay:"Pay now",
+      cod:"Cash on Delivery (COD)",
+      add:"Add to cart",
+      empty:"Your cart is empty",
+      size:"Size",
+      pieces:"Pieces",
+      upload:"Upload print photos",
+      filesNeed:"You must upload the same number of photos as pieces.",
+      remove:"Remove",
+      qty:"Qty",
+      loadErr:"Load error: "
+    }
+  };
 
-document.getElementById("cartBtn").onclick=openCart;
-document.getElementById("closeBtn").onclick=closeCart;
+  const $ = (s)=>document.querySelector(s);
+  const money = (x)=> `AED ${Number(x||0).toFixed(2)}`;
 
-function addItem(name,price){
-  const it=cart.find(i=>i.name===name);
-  if(it) it.qty++;
-  else cart.push({name,price,qty:1});
-  renderCart();
-  openCart();
-}
+  const state = {
+    lang: localStorage.getItem("azl_lang") || (((navigator.language||"en").toLowerCase().startsWith("ar")) ? "ar" : "en"),
+    products: [],
+    categories: [],
+    activeCategory: "all",
+    cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
+  };
 
-function changeQty(i,delta){
-  cart[i].qty+=delta;
-  if(cart[i].qty<=0) cart.splice(i,1);
-  renderCart();
-}
+  function t(k){ return dict[state.lang][k]; }
+  function save(){
+    localStorage.setItem("azl_lang", state.lang);
+    localStorage.setItem("azl_cart", JSON.stringify(state.cart));
+  }
 
-function setQty(i,val){
-  cart[i].qty=Math.max(1,val);
-  renderCart();
-}
+  function applyLang(){
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir  = state.lang==="ar" ? "rtl" : "ltr";
 
-function removeItem(i){
-  cart.splice(i,1);
-  renderCart();
-}
+    $("#brandText").textContent = t("brand");
+    $("#hint").textContent = t("hint");
+    $("#heroTitle").textContent = t("heroTitle");
+    $("#heroSub").textContent = t("heroSub");
+    $("#c1").textContent = t("c1");
+    $("#c2").textContent = t("c2");
+    $("#c3").textContent = t("c3");
 
-function renderCart(){
-  const box=document.getElementById("items");
-  let total=0;
-  box.innerHTML="";
-  cart.forEach((i,idx)=>{
-    total+=i.price*i.qty;
-    box.innerHTML+=`
-    <div class="cart-item">
-      <div class="row">
-        <b>${i.name}</b>
-        <span>AED ${(i.price*i.qty).toFixed(2)}</span>
-      </div>
-      <div class="row">
-        <button class="remove" onclick="removeItem(${idx})">حذف</button>
-        <div class="qty-box">
-          <button onclick="changeQty(${idx},-1)">−</button>
-          <input type="number" value="${i.qty}" onchange="setQty(${idx},this.value)">
-          <button onclick="changeQty(${idx},1)">+</button>
+    $("#cartTitle").textContent = t("cart");
+    $("#totalLabel").textContent = t("total");
+    $("#payBtn").textContent = t("pay");
+    $("#codBtn").textContent = t("cod");
+
+    $("#langBtn").textContent = (state.lang==="ar") ? "EN" : "AR";
+  }
+
+  async function loadProducts(){
+    // مهم: لازم يكون اسم الملف products.json (بدون .txt)
+    const res = await fetch("/products.json", { cache:"no-store" });
+    if(!res.ok) throw new Error("products.json not found (HTTP " + res.status + ")");
+    const data = await res.json();
+    state.categories = Array.isArray(data.categories) ? data.categories : [];
+    state.products = Array.isArray(data.products) ? data.products : [];
+  }
+
+  function renderCategories(){
+    const cats = [
+      { id:"all", ar:t("all"), en:t("all") },
+      ...state.categories
+    ];
+
+    $("#cats").innerHTML = cats.map(c=>{
+      const label = state.lang==="ar" ? (c.ar||c.en||c.id) : (c.en||c.ar||c.id);
+      const active = (state.activeCategory===c.id) ? "active" : "";
+      return `<button class="catBtn ${active}" data-cat="${c.id}">${label}</button>`;
+    }).join("");
+
+    $("#cats").querySelectorAll("[data-cat]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        state.activeCategory = btn.dataset.cat;
+        renderCategories();
+        renderProducts();
+      });
+    });
+  }
+
+  function productCard(p){
+    const name = p.name?.[state.lang] || p.name?.en || p.id;
+    const cat = p.category || "";
+    const hasVariants = Array.isArray(p.variants) && p.variants.length;
+
+    // UI ids
+    const sizeId = `size_${p.id}`;
+    const piecesId = `pieces_${p.id}`;
+    const filesId = `files_${p.id}`;
+
+    const variantUI = hasVariants ? `
+      <div class="sub">${t("size")}</div>
+      <select id="${sizeId}">
+        ${p.variants.map(v=>{
+          const label = state.lang==="ar" ? (v.ar||v.en||v.id) : (v.en||v.ar||v.id);
+          return `<option value="${v.id}">${label}</option>`;
+        }).join("")}
+      </select>
+
+      <div class="sub">${t("pieces")}</div>
+      <select id="${piecesId}">
+        ${(p.pieces||[]).map(n=> `<option value="${n}">${t("pieces")}: ${n}</option>`).join("")}
+      </select>
+
+      ${p.requiresFiles ? `
+        <div class="sub">${t("upload")}</div>
+        <input id="${filesId}" type="file" multiple accept="image/*" />
+        <div class="sub" id="${filesId}_hint" style="color:var(--muted)"></div>
+      ` : ``}
+    ` : `
+      <div class="price">${money(Number(p.price||0))}</div>
+      <div class="sub">${cat}</div>
+    `;
+
+    return `
+      <article class="card">
+        <div class="img"></div>
+        <div class="p">
+          <div class="name">${name}</div>
+          ${hasVariants ? `<div class="price" id="price_${p.id}">${money(0)}</div><div class="sub">${cat}</div>` : ``}
+          ${variantUI}
+          <button class="addBtn" data-add="${p.id}">${t("add")}</button>
         </div>
-      </div>
-    </div>`;
-  });
-  document.getElementById("total").textContent="AED "+total.toFixed(2);
-  document.getElementById("count").textContent=
-    cart.reduce((s,i)=>s+i.qty,0);
-}
-</script>
+      </article>
+    `;
+  }
 
+  function getVariantPrice(p, variantId, pieces){
+    // pricing matrix: p.pricing[variantId][pieces] => number
+    const v = String(variantId||"");
+    const pc = String(pieces||"");
+    const price = p?.pricing?.[v]?.[pc];
+    return Number(price || 0);
+  }
+
+  function renderProducts(){
+    const list = (state.activeCategory==="all")
+      ? state.products
+      : state.products.filter(p => p.category === state.activeCategory);
+
+    $("#grid").innerHTML = list.map(productCard).join("");
+
+    // Wire add buttons + dynamic price updates for variants
+    list.forEach(p=>{
+      const addBtn = document.querySelector(`[data-add="${p.id}"]`);
+      if(addBtn) addBtn.addEventListener("click", ()=> addToCart(p.id));
+
+      if(Array.isArray(p.variants) && p.variants.length){
+        const sizeEl = document.getElementById(`size_${p.id}`);
+        const piecesEl = document.getElementById(`pieces_${p.id}`);
+        const priceEl = document.getElementById(`price_${p.id}`);
+        const hintEl = document.getElementById(`files_${p.id}_hint`);
+        const filesEl = document.getElementById(`files_${p.id}`);
+
+        const refresh = ()=>{
+          const v = sizeEl?.value || p.variants[0].id;
+          const pc = Number(piecesEl?.value || (p.pieces?.[0]||1));
+          const pr = getVariantPrice(p, v, pc);
+          if(priceEl) priceEl.textContent = money(pr);
+          if(hintEl) hintEl.textContent = (state.lang==="ar")
+            ? `لازم ترفع ${pc} صور`
+            : `Upload ${pc} photos`;
+          // لو المستخدم غير pieces، من الأفضل تصفير الملفات ليعيد الرفع الصحيح
+          if(filesEl) filesEl.value = "";
+        };
+
+        if(sizeEl) sizeEl.addEventListener("change", refresh);
+        if(piecesEl) piecesEl.addEventListener("change", refresh);
+        refresh();
+      }
+    });
+
+    updateCartUI();
+  }
+
+  function cartKey(pId, variantId, pieces, filesCount){
+    return `${pId}|${variantId||"-"}|${pieces||"-"}|${filesCount||0}`;
+  }
+
+  function addToCart(productId){
+    const p = state.products.find(x=>x.id===productId);
+    if(!p) return;
+
+    const hasVariants = Array.isArray(p.variants) && p.variants.length;
+
+    let variantId = null;
+    let pieces = null;
+    let unitPrice = 0;
+    let files = [];
+
+    if(hasVariants){
+      variantId = document.getElementById(`size_${p.id}`)?.value || p.variants[0].id;
+      pieces = Number(document.getElementById(`pieces_${p.id}`)?.value || (p.pieces?.[0]||1));
+      unitPrice = getVariantPrice(p, variantId, pieces);
+
+      if(p.requiresFiles){
+        const fileInput = document.getElementById(`files_${p.id}`);
+        files = Array.from(fileInput?.files || []);
+        if(files.length !== pieces){
+          alert(t("filesNeed"));
+          return;
+        }
+      }
+    } else {
+      unitPrice = Number(p.price || 0);
+    }
+
+    const name = p.name || { ar:p.id, en:p.id };
+    const vObj = hasVariants ? p.variants.find(v=>v.id===variantId) : null;
+    const variantLabel = vObj ? (state.lang==="ar" ? (vObj.ar||vObj.en||vObj.id) : (vObj.en||vObj.ar||vObj.id)) : null;
+
+    const fileNames = files.map(f=>f.name); // ملاحظة: نخزن أسماء فقط (ليس الملفات نفسها)
+
+    const key = cartKey(p.id, variantId, pieces, fileNames.length);
+
+    const existing = state.cart.find(i=>i.key===key && JSON.stringify(i.fileNames||[])===JSON.stringify(fileNames||[]));
+    if(existing){
+      existing.qty += 1;
+    } else {
+      state.cart.push({
+        key,
+        id: p.id,
+        name,
+        category: p.category || "",
+        qty: 1,
+        unitPrice: Number(unitPrice || 0),
+        variantId,
+        variantLabel,
+        pieces,
+        fileNames
+      });
+    }
+
+    save();
+    updateCartUI();
+    openCart();
+  }
+
+  function updateCartUI(){
+    const count = state.cart.reduce((s,i)=> s + Number(i.qty||0), 0);
+    $("#count").textContent = count;
+
+    const total = state.cart.reduce((s,i)=> s + (Number(i.unitPrice||0) * Number(i.qty||0)), 0);
+    $("#total").textContent = money(total);
+
+    const box = $("#items");
+    const err = $("#cartErr");
+    err.style.display="none";
+    err.textContent="";
+
+    if(!state.cart.length){
+      box.innerHTML = `<div class="sub">${t("empty")}</div>`;
+      return;
+    }
+
+    box.innerHTML = state.cart.map((i,idx)=>{
+      const title = (i.name?.[state.lang] || i.name?.en || i.id);
+      const metaParts = [];
+      if(i.variantLabel) metaParts.push(`${t("size")}: ${i.variantLabel}`);
+      if(i.pieces) metaParts.push(`${t("pieces")}: ${i.pieces}`);
+      if(Array.isArray(i.fileNames) && i.fileNames.length) metaParts.push(`Files: ${i.fileNames.length}/${i.pieces||i.fileNames.length}`);
+
+      const meta = metaParts.length ? metaParts.join(" • ") : "";
+      const line = money(Number(i.unitPrice||0) * Number(i.qty||0));
+
+      return `
+        <div class="cartItem" data-idx="${idx}">
+          <div class="ciTop">
+            <div>
+              <div class="ciName">${title}</div>
+              ${meta ? `<div class="ciMeta">${meta}</div>` : ``}
+            </div>
+            <div class="ciPrice">${line}</div>
+          </div>
+
+          <div class="qtyRow">
+            <button class="delBtn" data-del="${idx}">${t("remove")}</button>
+
+            <button class="miniBtn" data-minus="${idx}" aria-label="minus">−</button>
+            <input class="qtyInput" type="number" min="1" step="1" value="${Number(i.qty||1)}" data-qty="${idx}" />
+            <button class="miniBtn" data-plus="${idx}" aria-label="plus">+</button>
+
+            <span class="sub" style="margin-inline-start:auto">${money(i.unitPrice)} × ${i.qty}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // ✅ Event delegation (حتى لو السلة تتعاد رسمها 100 مرة، الأزرار تشتغل)
+    box.onclick = (ev)=>{
+      const plus = ev.target.closest("[data-plus]");
+      const minus = ev.target.closest("[data-minus]");
+      const del = ev.target.closest("[data-del]");
+      if(!plus && !minus && !del) return;
+
+      if(plus){
+        const idx = Number(plus.dataset.plus);
+        state.cart[idx].qty = Number(state.cart[idx].qty||1) + 1;
+        save(); updateCartUI();
+      }
+      if(minus){
+        const idx = Number(minus.dataset.minus);
+        const q = Number(state.cart[idx].qty||1) - 1;
+        state.cart[idx].qty = Math.max(1, q);
+        save(); updateCartUI();
+      }
+      if(del){
+        const idx = Number(del.dataset.del);
+        state.cart.splice(idx,1);
+        save(); updateCartUI();
+      }
+    };
+
+    // direct typing quantity
+    box.oninput = (ev)=>{
+      const q = ev.target.closest("[data-qty]");
+      if(!q) return;
+      const idx = Number(q.dataset.qty);
+      const val = Math.max(1, Number(q.value||1));
+      state.cart[idx].qty = val;
+      save(); updateCartUI();
+    };
+  }
+
+  function openCart(){
+    $("#drawer").classList.add("open");
+  }
+  function closeCart(){
+    $("#drawer").classList.remove("open");
+  }
+
+  async function payNow(){
+    try{
+      $("#cartErr").style.display="none";
+      $("#cartErr").textContent="";
+
+      if(!state.cart.length){ openCart(); return; }
+
+      // Validate magnet file requirements again before payment
+      for(const i of state.cart){
+        if(i.category==="magnet"){
+          const need = Number(i.pieces||0);
+          const have = Array.isArray(i.fileNames) ? i.fileNames.length : 0;
+          if(need && have !== need){
+            throw new Error(state.lang==="ar"
+              ? `منتج المغناطيس يحتاج ${need} صور.`
+              : `Magnet product requires ${need} photos.`);
+          }
+        }
+      }
+
+      const items = state.cart.map(i=>{
+        const title = (i.name?.[state.lang] || i.name?.en || i.id);
+        const opt = [];
+        if(i.variantLabel) opt.push(`${t("size")}: ${i.variantLabel}`);
+        if(i.pieces) opt.push(`${t("pieces")}: ${i.pieces}`);
+        if(Array.isArray(i.fileNames) && i.fileNames.length) opt.push(`Files: ${i.fileNames.length}`);
+        const label = opt.length ? `${title} — ${opt.join(" — ")}` : title;
+
+        return {
+          name: String(label),
+          unit_amount: Number(i.unitPrice || 0),
+          quantity: Number(i.qty || 1)
+        };
+      });
+
+      const res = await fetch(`${WORKER_URL}/create-checkout-session`,{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ currency:"AED", lang: state.lang, items })
+      });
+
+      const text = await res.text();
+      let data = null;
+      try{ data = JSON.parse(text); } catch { data = { raw:text }; }
+
+      if(!res.ok) throw new Error(data?.error || data?.raw || ("Worker error " + res.status));
+      if(!data.url) throw new Error("No checkout URL returned");
+
+      // Stripe: redirect customer to Checkout Session URL (server returns session.url)
+      // This is the documented flow. :contentReference[oaicite:1]{index=1}
+      location.href = data.url;
+
+    } catch(e){
+      const msg = (e?.message || String(e));
+      $("#cartErr").style.display="block";
+      $("#cartErr").textContent = msg;
+      alert(msg);
+    }
+  }
+
+  function placeCOD(){
+    if(!state.cart.length){ openCart(); return; }
+
+    const lines = state.cart.map(i=>{
+      const title = (i.name?.[state.lang] || i.name?.en || i.id);
+      const opt = [];
+      if(i.variantLabel) opt.push(`${t("size")}: ${i.variantLabel}`);
+      if(i.pieces) opt.push(`${t("pieces")}: ${i.pieces}`);
+      if(Array.isArray(i.fileNames) && i.fileNames.length) opt.push(`Files: ${i.fileNames.length}`);
+      return `- ${title}${opt.length ? " ("+opt.join(", ")+")" : ""} x${i.qty}`;
+    }).join("\n");
+
+    const total = state.cart.reduce((s,i)=> s + (Number(i.unitPrice||0)*Number(i.qty||0)), 0);
+
+    const msg = (state.lang==="ar")
+      ? `طلب COD من متجر أزل\n${lines}\nالإجمالي: ${money(total)}`
+      : `COD order from azl MG shop\n${lines}\nTotal: ${money(total)}`;
+
+    window.open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
+  }
+
+  // Events (✅ no overlay blocking)
+  $("#langBtn").addEventListener("click", ()=>{
+    state.lang = (state.lang==="ar") ? "en" : "ar";
+    save();
+    applyLang();
+    renderCategories();
+    renderProducts();
+  });
+
+  $("#cartBtn").addEventListener("click", openCart);
+  $("#back").addEventListener("click", closeCart);
+  $("#closeBtn").addEventListener("click", closeCart);
+  $("#payBtn").addEventListener("click", payNow);
+  $("#codBtn").addEventListener("click", placeCOD);
+
+  // Boot
+  (async ()=>{
+    try{
+      await loadProducts();
+      applyLang();
+      renderCategories();
+      renderProducts();
+    } catch(e){
+      applyLang();
+      const msg = t("loadErr") + (e?.message || e);
+      $("#grid").innerHTML = `<div class="sub">${msg}</div>`;
+      alert(msg);
+    }
+    updateCartUI();
+  })();
+</script>
 </body>
 </html>
