@@ -1,34 +1,26 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>تم إلغاء الدفع</title>
-  <style>
-    body{font-family:system-ui;margin:0;padding:24px;background:#f6f7fb}
-    .card{max-width:520px;margin:0 auto;background:#fff;border:1px solid #e6e8f0;border-radius:16px;padding:18px}
-    .btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:999px;border:1px solid #111;background:#111;color:#fff;text-decoration:none}
-  </style>
+<meta charset="utf-8">
+<title>تم إلغاء الدفع</title>
+<style>
+body{font-family:system-ui;background:#f6f7fb;margin:0;padding:40px}
+.card{
+  max-width:520px;margin:auto;background:#fff;
+  border-radius:16px;padding:24px;text-align:center
+}
+.btn{
+  display:inline-block;margin-top:16px;
+  padding:10px 18px;border-radius:999px;
+  background:#111;color:#fff;text-decoration:none
+}
+</style>
 </head>
 <body>
-  <div class="card">
-    <h2 id="h">تم إلغاء الدفع</h2>
-    <p id="p">يمكنك المحاولة مرة أخرى.</p>
-    <a class="btn" href="/index.html" id="b">العودة للمتجر</a>
-  </div>
-
-<script>
-  const q = new URLSearchParams(location.search);
-  const lang = (q.get("lang") === "en") ? "en" : "ar";
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang==="ar" ? "rtl" : "ltr";
-
-  if(lang==="en"){
-    document.title = "Payment cancelled";
-    document.getElementById("h").textContent = "Payment cancelled";
-    document.getElementById("p").textContent = "You can try again.";
-    document.getElementById("b").textContent = "Back to shop";
-  }
-</script>
+<div class="card">
+  <h2>تم إلغاء الدفع</h2>
+  <p>يمكنك المحاولة مرة أخرى.</p>
+  <a class="btn" href="/index.html">العودة للمتجر</a>
+</div>
 </body>
 </html>
