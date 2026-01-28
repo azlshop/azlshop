@@ -28,15 +28,34 @@
     },
 
     {
-      "id": "mag1",
-      "category": "print",
-      "type": "magnetic_print",
-      "name": { "ar": "صورة مغناطيسية", "en": "Magnetic Photo" },
-      "sizes": [
-        { "key": "5x5", "ar": "5×5 سم", "en": "5×5 cm", "price": 49 },
-        { "key": "7x7", "ar": "7×7 سم", "en": "7×7 cm", "price": 59 }
-      ],
-      "pieces": [4, 6, 8, 12]
+     {
+  "id": "magnetic_photo",
+  "category": "magnet",
+  "type": "print_upload",
+  "name": { "ar": "صورة مغناطيسية", "en": "Magnetic Photo" },
+
+  "sizes": [
+    {
+      "id": "5x5",
+      "label_ar": "5×5 سم",
+      "label_en": "5×5 cm",
+      "prices": { "4": 39, "6": 49, "8": 59, "12": 79 }
+    },
+    {
+      "id": "7x7",
+      "label_ar": "7×7 سم",
+      "label_en": "7×7 cm",
+      "prices": { "4": 49, "6": 59, "8": 69, "12": 89 }
     }
-  ]
+  ],
+
+  "pieces": [4, 6, 8, 12],
+
+  "rules": {
+    "require_upload": true,
+    "upload_count_equals_pieces": true,
+    "accepted_types": ["image/jpeg", "image/png", "image/webp"]
+  }
 }
+
+
