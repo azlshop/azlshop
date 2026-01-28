@@ -41,16 +41,27 @@ select,input[type=file]{
 }
 
 /* CART */
-.drawer{position:fixed;inset:0;pointer-events:none;z-index:9999}
-.drawer.open{pointer-events:auto}
-.back{
-  position:absolute;inset:0;background:rgba(0,0,0,.4);
-}
+/* ✅ FIX: overlay لا يغطي السلة */
+.drawer{ position:fixed; inset:0; z-index:9999; pointer-events:none; }
+.drawer.open{ pointer-events:auto; }
+
 .panel{
-  position:absolute;top:0;bottom:0;inset-inline-end:0;
-  width:min(420px,92vw);background:#fff;
-  transform:translateX(110%);transition:.25s;
-  border-inline-start:1px solid var(--line);
+  position:absolute;
+  top:0; bottom:0;
+  inset-inline-end:0;
+  width:min(420px,92vw);
+  background:#fff;
+  z-index:2;             /* 🔥 فوق */
+  pointer-events:auto;   /* 🔥 يستقبل الضغط */
+}
+
+.back{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:1;             /* 🔥 تحت */
+  pointer-events:auto;
+}
+
 }
 .drawer.open .panel{transform:translateX(0)}
 html[dir="ltr"] .panel{transform:translateX(-110%)}
@@ -267,3 +278,4 @@ $("#cartBtn").onclick=openCart;
 </script>
 </body>
 </html>
+
