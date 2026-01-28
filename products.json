@@ -1,57 +1,49 @@
 {
   "categories": [
-    { "id": "print",  "ar": "طباعة",   "en": "Print" },
-    { "id": "gifts",  "ar": "هدايا",   "en": "Gifts" },
-    { "id": "frames", "ar": "إطارات",  "en": "Frames" },
+    { "id": "print", "ar": "طباعة", "en": "Print" },
+    { "id": "gifts", "ar": "هدايا", "en": "Gifts" },
+    { "id": "frames", "ar": "إطارات", "en": "Frames" },
     { "id": "magnet", "ar": "مغناطيس", "en": "Magnet" }
   ],
   "products": [
     {
-      "id": "photo_print",
+      "id": "p1",
       "category": "print",
       "type": "simple",
       "name": { "ar": "طباعة صورة", "en": "Photo Print" },
       "price": 49
     },
     {
-      "id": "special_gift",
+      "id": "p2",
       "category": "gifts",
       "type": "simple",
       "name": { "ar": "هدية مميزة", "en": "Special Gift" },
       "price": 79
     },
     {
-      "id": "wall_frame",
+      "id": "p3",
       "category": "frames",
       "type": "simple",
-      "name": { "ar": "إطار جداري", "en": "Wall Frame" },
+      "name": { "ar": "إطار حائط", "en": "Wall Frame" },
       "price": 120
     },
 
     {
-      "id": "magnetic_photo",
+      "id": "m1",
       "category": "magnet",
       "type": "print_upload",
       "name": { "ar": "صورة مغناطيسية", "en": "Magnetic Photo" },
+
       "sizes": [
-        {
-          "id": "5x5",
-          "label_ar": "5×5 سم",
-          "label_en": "5×5 cm",
-          "prices": { "4": 39, "6": 49, "8": 59, "12": 79 }
-        },
-        {
-          "id": "7x7",
-          "label_ar": "7×7 سم",
-          "label_en": "7×7 cm",
-          "prices": { "4": 49, "6": 59, "8": 69, "12": 89 }
-        }
+        { "id": "5x5", "label_ar": "5×5 سم", "label_en": "5×5 cm" },
+        { "id": "7x7", "label_ar": "7×7 سم", "label_en": "7×7 cm" }
       ],
+
       "pieces": [4, 6, 8, 12],
-      "rules": {
-        "require_upload": true,
-        "upload_count_equals_pieces": true,
-        "accepted_types": ["image/jpeg", "image/png", "image/webp"]
+
+      "pricing": {
+        "5x5": { "4": 39, "6": 49, "8": 59, "12": 79 },
+        "7x7": { "4": 49, "6": 59, "8": 79, "12": 99 }
       }
     }
   ]
