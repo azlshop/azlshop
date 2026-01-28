@@ -7,216 +7,173 @@
 
   <style>
     :root{
-      --bg:#f6f8fb;
-      --card:#ffffff;
-      --line:#e6eaf0;
-      --muted:#6b7280;
-      --text:#0f172a;
-      --dark:#111827;
-      --shadow: 0 10px 30px rgba(15,23,42,.08);
-      --radius:18px;
+      --line:#e5e7eb;--muted:#6b7280;--dark:#111827;
+      --bg:#f8fafc;--card:#ffffff;--soft:#f3f4f6;
     }
     *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:var(--text)}
-    a{color:inherit}
-
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(246,248,251,.85);
-      backdrop-filter:saturate(180%) blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .nav{
-      max-width:1150px;margin:0 auto;padding:14px 14px;
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-    }
-    .brandBox{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:36px;height:36px;border-radius:12px;
-      background:linear-gradient(135deg,#111827,#334155);
-      box-shadow: var(--shadow);
-    }
-    .brand{font-weight:900;letter-spacing:.2px}
-    .sub{font-size:12px;color:var(--muted);margin-top:2px}
-
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:#111}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:12px 14px;z-index:10}
+    .top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{font-weight:900}
     .btn{
-      border:1px solid var(--dark);background:var(--dark);color:#fff;
-      border-radius:999px;padding:10px 14px;cursor:pointer;
-      font-weight:700;
+      border:1px solid var(--dark);
+      background:var(--dark);
+      color:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      touch-action:manipulation;
     }
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .ghost{background:#fff;color:var(--text);border:1px solid var(--line)}
-    .small{padding:8px 10px;font-size:12px}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .ghost{background:#fff;color:#111;border:1px solid var(--line)}
+    .small{padding:8px 10px;font-size:13px}
     .danger{border-color:#ef4444;color:#ef4444;background:#fff}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .muted{color:var(--muted);font-size:13px}
 
-    main{max-width:1150px;margin:0 auto;padding:18px 14px 60px}
+    /* hero */
     .hero{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      padding:16px;
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      margin-bottom:14px;
+      border-radius:16px;
+      padding:14px;
+      margin-bottom:12px;
+      display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;
     }
-    .hero h2{margin:0;font-size:16px}
-    .hero p{margin:4px 0 0;color:var(--muted);font-size:13px;max-width:740px}
-    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .pill{
-      background:#fff;border:1px solid var(--line);
-      border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted);
-      display:flex;gap:6px;align-items:center;
-    }
-    .dot{width:8px;height:8px;border-radius:999px;background:#22c55e}
-    .dot2{width:8px;height:8px;border-radius:999px;background:#3b82f6}
-    .dot3{width:8px;height:8px;border-radius:999px;background:#a855f7}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .badge{border:1px solid var(--line);background:var(--soft);padding:6px 10px;border-radius:999px;font-size:12px}
+    .dot{display:inline-block;width:8px;height:8px;border-radius:999px;background:#22c55e;margin-inline-end:6px}
 
-    .cats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 14px}
-    .cat{
-      border:1px solid var(--line);
-      background:#fff;
-      border-radius:999px;
-      padding:8px 12px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:12px;
-    }
-    .cat.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+    /* categories */
+    #cats{margin-bottom:12px}
+    #cats .btn{background:#fff;color:#111;border:1px solid var(--line)}
+    #cats .btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
 
+    /* products */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
     @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
-
     .card{
       background:var(--card);
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius:16px;
       overflow:hidden;
-      box-shadow: var(--shadow);
       display:flex;flex-direction:column;
-      min-height:310px;
+      min-height:320px;
+      box-shadow:0 10px 25px rgba(17,24,39,.06);
     }
-    .img{
-      height:140px;
-      background:
-        radial-gradient(120px 60px at 30% 30%, rgba(17,24,39,.12), transparent 60%),
-        radial-gradient(140px 70px at 70% 60%, rgba(59,130,246,.10), transparent 65%),
-        #eef2f7;
-    }
-    .content{padding:12px;display:grid;gap:10px}
-    .title{font-weight:900}
+    .img{height:140px;background:linear-gradient(135deg,#f3f4f6,#e5e7eb)}
+    .p{padding:12px;display:grid;gap:10px}
     .price{font-weight:900}
-    .muted{color:var(--muted);font-size:12px}
-    select, input[type="number"], input[type="text"]{
+    select,input[type="number"],input[type="file"]{
       width:100%;
       padding:10px;
       border-radius:12px;
       border:1px solid var(--line);
       background:#fff;
-      outline:none;
     }
-    input[type="file"]{
-      width:100%;
-      padding:10px;
-      border-radius:12px;
-      border:1px dashed #cbd5e1;
-      background:#fff;
-      outline:none;
-    }
-    .line{height:1px;background:var(--line);margin:6px 0}
-    .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    label{font-size:12px;color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:6px 0}
 
-    /* Drawer (Cart) */
-    .drawer{position:fixed;inset:0;pointer-events:none;z-index:9999}
+    /* ====== Drawer FIX (الأهم) ====== */
+    .drawer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:9999;
+    }
     .drawer.open{pointer-events:auto}
+
+    /* الخلفية الرمادية */
     .back{
-      position:absolute;inset:0;background:rgba(2,6,23,.45);
-      opacity:0;transition:.2s;z-index:1;
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,.35);
+      opacity:0;
+      transition:.2s;
+      z-index:1;            /* أقل من panel */
+      pointer-events:auto;  /* تستقبل الضغط خارج السلة */
     }
     .drawer.open .back{opacity:1}
+
+    /* لوحة السلة */
     .panel{
-      position:absolute;top:0;bottom:0;inset-inline-end:0;
-      width:min(440px,94vw);
-      background:#fff;border-inline-start:1px solid var(--line);
-      transform:translateX(110%);transition:.22s;
-      z-index:2;
-      display:flex;flex-direction:column;
+      position:absolute;
+      inset-inline-end:0;
+      top:0;bottom:0;
+      width:min(420px,92vw);
+      background:#fff;
+      border-inline-start:1px solid var(--line);
+      transform:translateX(110%);
+      transition:.2s;
+      z-index:2;           /* أعلى من الخلفية */
+      pointer-events:auto; /* مهم: تستقبل الضغط */
+      display:flex;
+      flex-direction:column;
     }
     html[dir="ltr"] .panel{transform:translateX(-110%)}
     .drawer.open .panel{transform:translateX(0)}
-    .p{padding:14px}
-    .head{
-      padding:14px;border-bottom:1px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-    }
-    .body{
-      padding:14px;overflow:auto;flex:1;
-    }
-    .foot{
-      padding:14px;border-top:1px solid var(--line);
-    }
 
-    .cartItem{
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      background:#fff;
-      margin-bottom:10px;
+    .head{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
-    .cartTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .body{padding:14px;overflow:auto;flex:1}
+    .foot{padding:14px;border-top:1px solid var(--line)}
+
+    .cartItem{border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:10px;background:#fff}
+    .cartTop{display:flex;justify-content:space-between;gap:10px}
     .cartName{font-weight:900}
-    .cartMeta{font-size:12px;color:var(--muted);margin-top:2px}
-    .cartControls{
-      display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;
-    }
+    .cartMeta{font-size:12px;color:var(--muted);margin-top:4px}
+    .cartControls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
     .qtyBox{display:flex;align-items:center;gap:8px}
-    .qtyNum{min-width:30px;text-align:center;font-weight:900}
-    .qtyInput{width:80px}
-    .err{color:#ef4444;font-size:12px;margin-top:8px;display:none}
+    .qtyInput{
+      width:78px;
+      padding:8px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      text-align:center;
+      font-weight:700;
+    }
+    .err{margin-top:10px;color:#b91c1c;font-size:13px}
   </style>
 </head>
 
 <body>
-
 <header>
-  <div class="nav">
-    <div class="brandBox">
-      <div class="logo"></div>
-      <div>
-        <div class="brand" id="brand">متجر أزل</div>
-        <div class="sub" id="hint">أحدث المنتجات</div>
-      </div>
-    </div>
-
+  <div class="top">
+    <div class="brand" id="brand">متجر أزل</div>
     <div class="row">
       <button class="btn ghost" id="langBtn">EN</button>
       <button class="btn ghost" id="cartBtn">🛒 <span id="count">0</span></button>
     </div>
   </div>
+  <div class="muted" id="hint" style="margin-top:10px">أحدث المنتجات</div>
 </header>
 
-<main>
+<main class="wrap">
   <section class="hero">
     <div>
-      <h2 id="heroTitle">تجربة تسوق سريعة ومرتبة</h2>
-      <p id="heroDesc">اختر قسم، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.</p>
-
-      <div class="pills">
-        <div class="pill"><span class="dot"></span><span id="pill1">دفع آمن</span></div>
-        <div class="pill"><span class="dot2"></span><span id="pill2">COD متاح</span></div>
-        <div class="pill"><span class="dot3"></span><span id="pill3">عربي/إنجليزي تلقائي</span></div>
+      <div style="font-weight:900" id="heroTitle">تجربة شراء سريعة ونظيفة</div>
+      <div class="muted" id="heroSub">اختر القسم، أضف للسلة، وادفع عبر Stripe أو اطلب COD واتساب.</div>
+      <div class="badges" style="margin-top:10px">
+        <div class="badge"><span class="dot"></span><span id="b1">دفع آمن</span></div>
+        <div class="badge"><span class="dot"></span><span id="b2">COD متاح</span></div>
+        <div class="badge"><span class="dot"></span><span id="b3">عربي/إنجليزي تلقائي</span></div>
       </div>
     </div>
-
-    <div class="cats" id="cats"></div>
   </section>
 
+  <div class="row" id="cats"></div>
   <section class="grid" id="grid"></section>
 </main>
 
-<!-- CART -->
 <aside class="drawer" id="drawer" aria-hidden="true">
-  <div class="panel">
+  <!-- panel أولاً ثم back (مع z-index صحيح) -->
+  <div class="panel" id="panel">
     <div class="head">
       <b id="cartTitle">سلتك</b>
       <button class="btn ghost" id="closeBtn">✕</button>
@@ -224,6 +181,7 @@
 
     <div class="body">
       <div id="items"></div>
+      <div class="err" id="err" style="display:none"></div>
     </div>
 
     <div class="foot">
@@ -237,366 +195,329 @@
         <button class="btn ghost" id="codBtn">الدفع عند الاستلام (COD)</button>
       </div>
 
-      <div class="err" id="err"></div>
+      <div class="muted" style="margin-top:10px" id="note">
+        عدد الصور يجب أن يساوي عدد القطع.
+      </div>
     </div>
   </div>
+
   <div class="back" id="back"></div>
 </aside>
 
 <script>
-  // ====== SETTINGS ======
-  const WORKER_URL   = "https://azlshop.eng-suwan.workers.dev";
+  const WORKER_URL = "https://azlshop.eng-suwan.workers.dev";
   const COD_WHATSAPP = "971544219984";
 
-  // ====== I18N ======
   const dict = {
     ar: {
-      brand:"متجر أزل", hint:"أحدث المنتجات",
-      heroTitle:"تجربة تسوق سريعة ومرتبة",
-      heroDesc:"اختر قسم، أضف للسلة، ثم ادفع عبر Stripe أو اطلب COD عبر واتساب.",
-      pill1:"دفع آمن", pill2:"COD متاح", pill3:"عربي/إنجليزي تلقائي",
+      brand:"متجر أزل",
+      hint:"أحدث المنتجات",
+      heroTitle:"تجربة شراء سريعة ونظيفة",
+      heroSub:"اختر القسم، أضف للسلة، وادفع عبر Stripe أو اطلب COD واتساب.",
+      b1:"دفع آمن", b2:"COD متاح", b3:"عربي/إنجليزي تلقائي",
       all:"الكل",
-      cart:"سلتك", total:"الإجمالي",
-      pay:"ادفع الآن", cod:"الدفع عند الاستلام (COD)",
+      cart:"سلتك",
+      total:"الإجمالي",
+      pay:"ادفع الآن",
+      cod:"الدفع عند الاستلام (COD)",
       add:"أضف للسلة",
+      remove:"حذف",
       empty:"السلة فارغة.",
       size:"الحجم",
       pieces:"عدد القطع",
       upload:"ارفع الصور للطباعة",
       files:"الصور",
-      remove:"حذف",
+      needFiles:"يجب رفع صور بعدد القطع قبل الدفع.",
       qty:"الكمية",
-      qtyEdit:"تعديل الكمية",
-      needFiles:"عدد الصور يجب أن يساوي عدد القطع",
-      payErr:"خطأ في الدفع: ",
-      item:"منتج"
+      note:"عدد الصور يجب أن يساوي عدد القطع."
     },
     en: {
-      brand:"azl MG shop", hint:"Latest products",
+      brand:"azl MG shop",
+      hint:"Latest products",
       heroTitle:"Clean & fast shopping experience",
-      heroDesc:"Pick a category, add to cart, then pay via Stripe or order COD on WhatsApp.",
-      pill1:"Secure payments", pill2:"COD available", pill3:"Auto Arabic/English",
+      heroSub:"Pick a category, add to cart, pay via Stripe or order COD on WhatsApp.",
+      b1:"Secure payments", b2:"COD available", b3:"Auto Arabic/English",
       all:"All",
-      cart:"Your cart", total:"Total",
-      pay:"Pay now", cod:"Cash on Delivery (COD)",
+      cart:"Your cart",
+      total:"Total",
+      pay:"Pay now",
+      cod:"Cash on Delivery (COD)",
       add:"Add to cart",
+      remove:"Remove",
       empty:"Your cart is empty.",
       size:"Size",
       pieces:"Pieces",
-      upload:"Upload print files",
+      upload:"Upload photos for printing",
       files:"Files",
-      remove:"Remove",
+      needFiles:"You must upload files equal to pieces before paying.",
       qty:"Qty",
-      qtyEdit:"Edit quantity",
-      needFiles:"Number of uploaded files must match pieces",
-      payErr:"Payment error: ",
-      item:"Item"
+      note:"Number of files must match pieces."
     }
   };
 
-  // ====== HELPERS ======
   const $ = (s)=>document.querySelector(s);
+
   function detectDeviceLang(){
     const l = (navigator.language || "en").toLowerCase();
     return l.startsWith("ar") ? "ar" : "en";
   }
 
-  // ====== DATA (EDIT PRICES LATER) ======
-  const productsData = {
-    categories: [
-      { id:"print",  ar:"طباعة",   en:"Print"  },
-      { id:"gifts",  ar:"هدايا",   en:"Gifts"  },
-      { id:"frames", ar:"إطارات",  en:"Frames" },
-      { id:"magnet", ar:"مغناطيس", en:"Magnet" }
-    ],
-    products: [
-      { id:"p1", category:"print",  name:{ar:"طباعة صورة", en:"Photo Print"},   basePrice:49, type:"simple" },
-      { id:"p2", category:"gifts",  name:{ar:"هدية مميزة",  en:"Special Gift"}, basePrice:79, type:"simple" },
-      { id:"p3", category:"frames", name:{ar:"إطار حائط",   en:"Wall Frame"},   basePrice:120,type:"simple" },
-
-      // ✅ NEW MAGNET PRODUCT (REQUIRES UPLOAD)
-      {
-        id:"m1",
-        category:"magnet",
-        name:{ar:"صورة مغناطيسية", en:"Magnetic Photo"},
-        type:"magnet_upload",
-        options:{
-          size:[
-            { key:"5x5", ar:"5×5 سم", en:"5×5 cm" },
-            { key:"7x7", ar:"7×7 سم", en:"7×7 cm" }
-          ],
-          pieces:[4,6,8,12]
-        },
-        // أسعار مؤقتة (يمكن تعديلها لاحقًا)
-        pricing:{
-          "5x5": { 4:39,  6:55,  8:69, 12:99 },
-          "7x7": { 4:59,  6:79,  8:99, 12:139 }
-        }
-      }
-    ]
-  };
-
-  // ====== STATE ======
   const state = {
     lang: localStorage.getItem("azl_lang") || detectDeviceLang(),
-    activeCategory: "all",
     cart: JSON.parse(localStorage.getItem("azl_cart") || "[]"),
-    // نحتفظ بأسماء الملفات لكل عنصر بالسلة (حسب key)
+    categories: [],
+    products: [],
+    activeCategory: "all",
     fileNamesByKey: JSON.parse(localStorage.getItem("azl_files") || "{}")
   };
 
   function t(k){ return dict[state.lang][k]; }
-  function money(x){ return `AED ${Number(x).toFixed(2)}`; }
+  function money(x){ return `AED ${Number(x||0).toFixed(2)}`; }
+
   function save(){
     localStorage.setItem("azl_lang", state.lang);
     localStorage.setItem("azl_cart", JSON.stringify(state.cart));
     localStorage.setItem("azl_files", JSON.stringify(state.fileNamesByKey));
   }
+
   function showErr(msg){
     const el = $("#err");
     el.style.display = msg ? "block" : "none";
     el.textContent = msg || "";
   }
 
-  // ====== UI TEXT ======
+  async function loadProducts(){
+    // لازم يكون products.json (بدون txt)
+    const res = await fetch("/products.json", { cache:"no-store" });
+    if(!res.ok) throw new Error("products.json not found (HTTP " + res.status + ")");
+    const data = await res.json();
+    state.categories = Array.isArray(data.categories) ? data.categories : [];
+    state.products = Array.isArray(data.products) ? data.products : [];
+  }
+
+  function loadFallbackProducts(){
+    state.categories = [
+      { id:"print", ar:"طباعة", en:"Print" },
+      { id:"gifts", ar:"هدايا", en:"Gifts" },
+      { id:"frames", ar:"إطارات", en:"Frames" },
+      { id:"magnet", ar:"مغناطيس", en:"Magnet" }
+    ];
+
+    state.products = [
+      { id:"p1", category:"print", name:{ar:"طباعة صورة",en:"Photo Print"}, price:49 },
+      { id:"p2", category:"gifts", name:{ar:"هدية مميزة",en:"Special Gift"}, price:79 },
+      { id:"p3", category:"frames", name:{ar:"إطار حائط",en:"Wall Frame"}, price:120 },
+      {
+        id:"m1",
+        category:"magnet",
+        name:{ ar:"صورة مغناطيسية", en:"Magnetic Photo" },
+        variants:{
+          sizes:[
+            { key:"5x5", ar:"5×5 سم", en:"5×5 cm", base_price:39 },
+            { key:"7x7", ar:"7×7 سم", en:"7×7 cm", base_price:49 }
+          ],
+          pieces:[4,6,8,12]
+        },
+        requires_uploads:true
+      }
+    ];
+  }
+
   function applyLang(){
     document.documentElement.lang = state.lang;
     document.documentElement.dir  = state.lang==="ar" ? "rtl" : "ltr";
 
     $("#brand").textContent = t("brand");
-    $("#hint").textContent  = t("hint");
+    $("#hint").textContent = t("hint");
     $("#heroTitle").textContent = t("heroTitle");
-    $("#heroDesc").textContent  = t("heroDesc");
-    $("#pill1").textContent = t("pill1");
-    $("#pill2").textContent = t("pill2");
-    $("#pill3").textContent = t("pill3");
+    $("#heroSub").textContent = t("heroSub");
+    $("#b1").textContent = t("b1");
+    $("#b2").textContent = t("b2");
+    $("#b3").textContent = t("b3");
 
     $("#cartTitle").textContent = t("cart");
     $("#totalLabel").textContent = t("total");
     $("#payBtn").textContent = t("pay");
     $("#codBtn").textContent = t("cod");
     $("#langBtn").textContent = state.lang==="ar" ? "EN" : "AR";
+    $("#note").textContent = t("note");
   }
 
-  // ====== CATEGORIES ======
   function renderCategories(){
-    const cats = productsData.categories;
-    $("#cats").innerHTML = `
-      <button class="cat ${state.activeCategory==="all" ? "active":""}" data-cat="all">${t("all")}</button>
-      ${cats.map(c=>`
-        <button class="cat ${state.activeCategory===c.id ? "active":""}" data-cat="${c.id}">
-          ${state.lang==="ar"?c.ar:c.en}
-        </button>
-      `).join("")}
-    `;
+    const allBtn = `<button class="btn ghost active" data-cat="all">${t("all")}</button>`;
+    const rest = state.categories.map(c=>`
+      <button class="btn ghost" data-cat="${c.id}">${state.lang==="ar"?c.ar:c.en}</button>
+    `).join("");
 
-    $("#cats").querySelectorAll("[data-cat]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        state.activeCategory = btn.dataset.cat;
-        renderCategories();
+    $("#cats").innerHTML = allBtn + rest;
+
+    $("#cats").querySelectorAll("button[data-cat]").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        $("#cats").querySelectorAll("button").forEach(x=>x.classList.remove("active"));
+        b.classList.add("active");
+        state.activeCategory = b.dataset.cat;
         renderProducts();
       });
     });
   }
 
-  // ====== PRODUCT CARD RENDER ======
+  function productCardHTML(p){
+    const name = (p.name?.[state.lang] || p.name?.en || "-");
+
+    if(p.variants?.sizes?.length && Array.isArray(p.variants?.pieces)){
+      const sizeOptions = p.variants.sizes.map(s=>`
+        <option value="${s.key}">
+          ${state.lang==="ar"?s.ar:s.en} — ${money(s.base_price)}
+        </option>
+      `).join("");
+
+      const piecesOptions = p.variants.pieces.map(n=>`
+        <option value="${n}">${t("pieces")}: ${n}</option>
+      `).join("");
+
+      return `
+        <article class="card">
+          <div class="img"></div>
+          <div class="p">
+            <b>${name}</b>
+
+            <div>
+              <label>${t("size")}</label>
+              <select id="size_${p.id}">${sizeOptions}</select>
+            </div>
+
+            <div>
+              <label>${t("pieces")}</label>
+              <select id="pieces_${p.id}">${piecesOptions}</select>
+            </div>
+
+            <div class="divider"></div>
+
+            <div>
+              <label>${t("upload")}</label>
+              <input type="file" id="files_${p.id}" multiple accept="image/*" />
+              <div class="muted" id="filesHint_${p.id}"></div>
+            </div>
+
+            <div class="row" style="justify-content:space-between">
+              <div class="price" id="price_${p.id}">${money(p.variants.sizes[0].base_price)}</div>
+              <button class="btn ghost" data-add="${p.id}">${t("add")}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    return `
+      <article class="card">
+        <div class="img"></div>
+        <div class="p">
+          <b>${name}</b>
+          <div class="price">${money(p.price || 0)}</div>
+          <button class="btn ghost" data-add="${p.id}">${t("add")}</button>
+        </div>
+      </article>
+    `;
+  }
+
   function renderProducts(){
-    const list = state.activeCategory==="all"
-      ? productsData.products
-      : productsData.products.filter(p=> p.category===state.activeCategory);
+    const list = (state.activeCategory==="all")
+      ? state.products
+      : state.products.filter(p => p.category === state.activeCategory);
 
-    $("#grid").innerHTML = list.map(p=>{
-      if(p.type==="magnet_upload"){
-        return renderMagnetCard(p);
+    $("#grid").innerHTML = list.map(productCardHTML).join("");
+
+    document.querySelectorAll("[data-add]").forEach(btn=>{
+      btn.addEventListener("click", ()=> addToCart(btn.dataset.add));
+    });
+
+    list.forEach(p=>{
+      if(p.variants?.sizes?.length){
+        const sizeSel = document.getElementById(`size_${p.id}`);
+        const piecesSel = document.getElementById(`pieces_${p.id}`);
+        const filesInp = document.getElementById(`files_${p.id}`);
+        const priceEl  = document.getElementById(`price_${p.id}`);
+        const hintEl   = document.getElementById(`filesHint_${p.id}`);
+
+        if(sizeSel && priceEl){
+          sizeSel.addEventListener("change", ()=>{
+            const s = p.variants.sizes.find(x=>x.key===sizeSel.value);
+            priceEl.textContent = money(s?.base_price || 0);
+          });
+        }
+
+        if(filesInp && piecesSel && hintEl){
+          const updateHint = ()=>{
+            const need = Number(piecesSel.value || 0);
+            const got  = (filesInp.files?.length || 0);
+            hintEl.textContent = `${t("files")}: ${got}/${need}`;
+          };
+          piecesSel.addEventListener("change", updateHint);
+          filesInp.addEventListener("change", updateHint);
+          updateHint();
+        }
       }
-      return renderSimpleCard(p);
-    }).join("");
-
-    // bind simple add
-    document.querySelectorAll("[data-add-simple]").forEach(b=>{
-      b.addEventListener("click", ()=> addSimpleToCart(b.dataset.addSimple));
-    });
-
-    // bind magnet add + upload
-    document.querySelectorAll("[data-add-magnet]").forEach(b=>{
-      b.addEventListener("click", ()=> addMagnetToCart(b.dataset.addMagnet));
-    });
-
-    document.querySelectorAll("[data-upload]").forEach(inp=>{
-      inp.addEventListener("change", (e)=> onUploadChange(e, inp.dataset.upload));
-    });
-
-    document.querySelectorAll("[data-size]").forEach(sel=>{
-      sel.addEventListener("change", ()=> updateMagnetPrice(sel.dataset.size));
-    });
-    document.querySelectorAll("[data-pieces]").forEach(sel=>{
-      sel.addEventListener("change", ()=> updateMagnetPrice(sel.dataset.pieces));
     });
 
     updateCartUI();
   }
 
-  function renderSimpleCard(p){
-    const name = p.name?.[state.lang] || p.name?.en || "-";
-    return `
-      <article class="card">
-        <div class="img"></div>
-        <div class="content">
-          <div class="title">${name}</div>
-          <div class="price">${money(p.basePrice || 0)}</div>
-          <div class="muted">${p.category}</div>
-          <div class="line"></div>
-          <button class="btn ghost" data-add-simple="${p.id}">${t("add")}</button>
-        </div>
-      </article>
-    `;
+  function buildCartKey(p, sizeKey, pieces){
+    return `${p.id}|${sizeKey||"-"}|${pieces||"-"}`;
   }
 
-  function renderMagnetCard(p){
-    const name = p.name?.[state.lang] || p.name?.en || "-";
-    const sizeOptions = p.options.size.map(s=>`
-      <option value="${s.key}">${state.lang==="ar"?s.ar:s.en}</option>
-    `).join("");
-    const pieceOptions = p.options.pieces.map(n=>`<option value="${n}">${n}</option>`).join("");
-
-    // default selections
-    const defaultSize = p.options.size[0].key;
-    const defaultPieces = p.options.pieces[0];
-    const defaultPrice = (p.pricing?.[defaultSize]?.[defaultPieces]) ?? 0;
-
-    return `
-      <article class="card">
-        <div class="img"></div>
-        <div class="content">
-          <div class="title">${name}</div>
-
-          <div class="two">
-            <div>
-              <div class="muted">${t("size")}</div>
-              <select data-size="${p.id}" id="size_${p.id}">
-                ${sizeOptions}
-              </select>
-            </div>
-            <div>
-              <div class="muted">${t("pieces")}</div>
-              <select data-pieces="${p.id}" id="pieces_${p.id}">
-                ${pieceOptions}
-              </select>
-            </div>
-          </div>
-
-          <div class="price" id="price_${p.id}">${money(defaultPrice)}</div>
-
-          <div>
-            <div class="muted">${t("upload")}</div>
-            <input type="file" multiple accept="image/*" data-upload="${p.id}" id="files_${p.id}" />
-            <div class="muted" id="filesHint_${p.id}" style="margin-top:6px">0/${defaultPieces}</div>
-          </div>
-
-          <div class="line"></div>
-          <button class="btn ghost" data-add-magnet="${p.id}">${t("add")}</button>
-        </div>
-      </article>
-    `;
-  }
-
-  function updateMagnetPrice(productId){
-    const p = productsData.products.find(x=>x.id===productId);
+  function addToCart(id){
+    const p = state.products.find(x=>x.id===id);
     if(!p) return;
 
-    const sizeKey = document.getElementById(`size_${productId}`)?.value || p.options.size[0].key;
-    const pieces  = Number(document.getElementById(`pieces_${productId}`)?.value || p.options.pieces[0]);
+    if(p.variants?.sizes?.length){
+      const sizeKey = document.getElementById(`size_${id}`)?.value || p.variants.sizes[0].key;
+      const pieces  = Number(document.getElementById(`pieces_${id}`)?.value || p.variants.pieces[0]);
+      const sizeObj = p.variants.sizes.find(s=>s.key===sizeKey);
+      const unitPrice = Number(sizeObj?.base_price || 0);
 
-    const price = (p.pricing?.[sizeKey]?.[pieces]) ?? 0;
-    const priceEl = document.getElementById(`price_${productId}`);
-    if(priceEl) priceEl.textContent = money(price);
+      const filesInp = document.getElementById(`files_${id}`);
+      const files = filesInp ? Array.from(filesInp.files || []) : [];
 
-    const hint = document.getElementById(`filesHint_${productId}`);
-    if(hint){
-      const files = document.getElementById(`files_${productId}`)?.files?.length || 0;
-      hint.textContent = `${files}/${pieces}`;
-    }
-  }
+      if(p.requires_uploads && files.length !== pieces){
+        alert(t("needFiles"));
+        return;
+      }
 
-  // ====== CART ADD ======
-  function addSimpleToCart(id){
-    const p = productsData.products.find(x=>x.id===id);
-    if(!p) return;
-    const key = `${id}|simple`;
-    const it = state.cart.find(x=>x.key===key);
-    if(it) it.qty++;
-    else state.cart.push({
-      key,
-      productId:id,
-      name:p.name,
-      qty:1,
-      unitPrice:Number(p.basePrice||0),
-      requires_uploads:false
-    });
-    save(); updateCartUI();
-  }
+      const key = buildCartKey(p, sizeKey, pieces);
+      const it = state.cart.find(x=>x.key===key);
+      if(it){ it.qty += 1; }
+      else {
+        state.cart.push({
+          key,
+          id:p.id,
+          name:p.name,
+          qty:1,
+          unitPrice,
+          size: (state.lang==="ar" ? (sizeObj?.ar || sizeKey) : (sizeObj?.en || sizeKey)),
+          pieces,
+          requires_uploads: !!p.requires_uploads
+        });
+      }
 
-  function onUploadChange(e, productId){
-    // نحن فقط نخزن أسماء الملفات محلياً (الرفع الحقيقي لاحقاً)
-    const files = Array.from(e.target.files || []);
-    // نخزن مؤقتاً في عنصر خاص بالمنتج (عند الإضافة للسلة سنربطها بـ item key)
-    // لأجل البساطة: نخزنها بمفتاح "draft:productId"
-    state.fileNamesByKey[`draft:${productId}`] = files.map(f=>f.name);
-    save();
+      if(p.requires_uploads){
+        state.fileNamesByKey[key] = files.map(f=>f.name);
+      }
 
-    updateMagnetPrice(productId);
-  }
+      if(filesInp) filesInp.value = "";
 
-  function addMagnetToCart(id){
-    const p = productsData.products.find(x=>x.id===id);
-    if(!p) return;
-
-    const sizeKey = document.getElementById(`size_${id}`)?.value;
-    const pieces  = Number(document.getElementById(`pieces_${id}`)?.value || 0);
-
-    const sizeObj = p.options.size.find(s=>s.key===sizeKey);
-    const sizeLabel = state.lang==="ar" ? sizeObj.ar : sizeObj.en;
-
-    const price = (p.pricing?.[sizeKey]?.[pieces]) ?? 0;
-
-    // تحقق الملفات
-    const draftFiles = state.fileNamesByKey[`draft:${id}`] || [];
-    if(draftFiles.length !== pieces){
-      alert(t("needFiles"));
+      save(); updateCartUI(); openCart();
       return;
     }
 
-    // key يعتمد على الحجم+القطع (حتى يكون عنصر مختلف)
-    const key = `${id}|${sizeKey}|${pieces}`;
+    const key = buildCartKey(p, "-", "-");
     const it = state.cart.find(x=>x.key===key);
-    if(it){
-      it.qty++;
-    } else {
-      state.cart.push({
-        key,
-        productId:id,
-        name:p.name,
-        qty:1,
-        unitPrice:Number(price),
-        requires_uploads:true,
-        size:sizeLabel,
-        pieces:pieces
-      });
-    }
+    if(it) it.qty += 1;
+    else state.cart.push({ key, id:p.id, name:p.name, qty:1, unitPrice:Number(p.price||0) });
 
-    // اربط الملفات بهذا العنصر داخل السلة
-    state.fileNamesByKey[key] = draftFiles;
-
-    // امسح draft
-    delete state.fileNamesByKey[`draft:${id}`];
-    const input = document.getElementById(`files_${id}`);
-    if(input) input.value = "";
-
-    save(); updateCartUI();
-    openCart();
+    save(); updateCartUI(); openCart();
   }
 
-  // ====== CART UI (WITH + / - / REMOVE + INPUT) ======
   function updateCartUI(){
     $("#count").textContent = state.cart.reduce((s,i)=> s + Number(i.qty||0), 0);
     const total = state.cart.reduce((s,i)=> s + (Number(i.unitPrice||0) * Number(i.qty||0)), 0);
@@ -605,16 +526,15 @@
     const box = $("#items");
     if(!state.cart.length){
       box.innerHTML = `<div class="muted">${t("empty")}</div>`;
+      $("#payBtn").disabled = true;
       return;
     }
 
     box.innerHTML = state.cart.map(i=>{
-      const name = (i.name?.[state.lang] || i.name?.en || t("item"));
-
+      const name = (i.name?.[state.lang] || i.name?.en || "Item");
       const meta = [];
       if(i.size) meta.push(`${t("size")}: ${i.size}`);
       if(i.pieces) meta.push(`${t("pieces")}: ${i.pieces}`);
-
       if(i.requires_uploads){
         const fn = state.fileNamesByKey[i.key] || [];
         meta.push(`${t("files")}: ${fn.length}/${i.pieces || 0}`);
@@ -634,24 +554,18 @@
           </div>
 
           <div class="cartControls">
-            <div class="qtyBox" title="${t("qtyEdit")}">
+            <div class="qtyBox">
               <button class="btn ghost small" data-dec="${i.key}">−</button>
-              <div class="qtyNum">${Number(i.qty||0)}</div>
+              <input class="qtyInput" type="number" min="1" step="1" value="${Number(i.qty||0)}" data-setqty="${i.key}" />
               <button class="btn ghost small" data-inc="${i.key}">+</button>
-
-              <!-- ✅ input مباشر للكمية -->
-              <input class="qtyInput" type="number" min="1" step="1" value="${Number(i.qty||0)}" data-q="${i.key}" />
             </div>
 
-            <button class="btn ghost small danger" data-rm="${i.key}">
-              ${t("remove")}
-            </button>
+            <button class="btn ghost small danger" data-rm="${i.key}">${t("remove")}</button>
           </div>
         </div>
       `;
     }).join("");
 
-    // events
     box.querySelectorAll("[data-inc]").forEach(b=>{
       b.addEventListener("click", ()=> changeQty(b.dataset.inc, +1));
     });
@@ -661,12 +575,15 @@
     box.querySelectorAll("[data-rm]").forEach(b=>{
       b.addEventListener("click", ()=> removeItem(b.dataset.rm));
     });
-    box.querySelectorAll("[data-q]").forEach(inp=>{
-      inp.addEventListener("input", ()=>{
-        const v = Number(inp.value || 1);
-        setQty(inp.dataset.q, v);
+    box.querySelectorAll("[data-setqty]").forEach(inp=>{
+      inp.addEventListener("change", ()=>{
+        const key = inp.dataset.setqty;
+        const v = Math.max(1, Number(inp.value || 1));
+        setQty(key, v);
       });
     });
+
+    $("#payBtn").disabled = !canPayNow();
   }
 
   function changeQty(key, delta){
@@ -677,11 +594,10 @@
     save(); updateCartUI();
   }
 
-  function setQty(key, value){
+  function setQty(key, qty){
     const it = state.cart.find(x=>x.key===key);
     if(!it) return;
-    const v = Math.max(1, Math.floor(Number(value||1)));
-    it.qty = v;
+    it.qty = Math.max(1, Number(qty||1));
     save(); updateCartUI();
   }
 
@@ -691,40 +607,37 @@
     save(); updateCartUI();
   }
 
-  // ====== DRAWER ======
+  function canPayNow(){
+    for(const i of state.cart){
+      if(i.requires_uploads){
+        const fn = state.fileNamesByKey[i.key] || [];
+        if(Number(fn.length) !== Number(i.pieces||0)) return false;
+      }
+    }
+    return true;
+  }
+
   function openCart(){ $("#drawer").classList.add("open"); }
   function closeCart(){ $("#drawer").classList.remove("open"); }
 
-  // ====== PAY ======
   async function payNow(){
     try{
       showErr("");
       if(!state.cart.length){ openCart(); return; }
-
-      // تحقق خاص بالمغناطيس: ملفات مطلوبة
-      for(const i of state.cart){
-        if(i.requires_uploads){
-          const fn = state.fileNamesByKey[i.key] || [];
-          if(fn.length !== Number(i.pieces||0)){
-            throw new Error(t("needFiles"));
-          }
-        }
-      }
+      if(!canPayNow()){ alert(t("needFiles")); return; }
 
       const items = state.cart.map(i=>{
-        const baseName = (i.name?.[state.lang] || i.name?.en || t("item"));
+        const name = (i.name?.[state.lang] || i.name?.en || "Item");
         const opt = [];
         if(i.size) opt.push(`${t("size")}: ${i.size}`);
         if(i.pieces) opt.push(`${t("pieces")}: ${i.pieces}`);
-        if(i.requires_uploads) opt.push(`${t("files")}: ${(state.fileNamesByKey[i.key]||[]).length}/${i.pieces}`);
+        if(i.requires_uploads){
+          const fn = state.fileNamesByKey[i.key] || [];
+          opt.push(`${t("files")}: ${fn.length}/${i.pieces||0}`);
+        }
+        const finalName = opt.length ? `${name} — ${opt.join(" — ")}` : name;
 
-        const fullName = opt.length ? `${baseName} — ${opt.join(" — ")}` : baseName;
-
-        return {
-          name: String(fullName),
-          unit_amount: Number(i.unitPrice),
-          quantity: Number(i.qty)
-        };
+        return { name: String(finalName), unit_amount: Number(i.unitPrice||0), quantity: Number(i.qty||1) };
       });
 
       const res = await fetch(`${WORKER_URL}/create-checkout-session`,{
@@ -735,41 +648,45 @@
 
       const text = await res.text();
       let data = null;
-      try{ data = JSON.parse(text); } catch { data = { raw:text }; }
+      try { data = JSON.parse(text); } catch { data = { raw:text }; }
 
-      if(!res.ok){
-        throw new Error(data.error || data.raw || ("Worker error " + res.status));
-      }
+      if(!res.ok) throw new Error(data.error || data.raw || ("Worker error " + res.status));
       if(!data.url) throw new Error("No checkout URL returned");
-
       location.href = data.url;
     } catch(e){
-      const msg = (e?.message || e);
-      showErr(t("payErr") + msg);
-      alert(t("payErr") + msg);
+      const msg = "Payment error: " + (e?.message || e);
+      showErr(msg);
+      alert(msg);
     }
   }
 
   function placeCOD(){
-    // message for WhatsApp
+    const total = state.cart.reduce((s,i)=> s + (Number(i.unitPrice||0)*Number(i.qty||0)), 0);
     const lines = state.cart.map(i=>{
-      const name = (i.name?.[state.lang] || i.name?.en || t("item"));
-      const parts = [];
-      if(i.size) parts.push(`${t("size")}: ${i.size}`);
-      if(i.pieces) parts.push(`${t("pieces")}: ${i.pieces}`);
-      return `- ${name}${parts.length?` (${parts.join(", ")})`:""} x${i.qty} = ${money(i.unitPrice*i.qty)}`;
+      const name = (i.name?.[state.lang] || i.name?.en || "-");
+      const opt = [];
+      if(i.size) opt.push(`${t("size")}: ${i.size}`);
+      if(i.pieces) opt.push(`${t("pieces")}: ${i.pieces}`);
+      if(i.requires_uploads){
+        const fn = state.fileNamesByKey[i.key] || [];
+        opt.push(`${t("files")}: ${fn.length}/${i.pieces||0}`);
+      }
+      const extras = opt.length ? ` (${opt.join(", ")})` : "";
+      return `- ${name}${extras} x${i.qty} = ${money(Number(i.unitPrice||0)*Number(i.qty||0))}`;
     }).join("\n");
 
-    const total = state.cart.reduce((s,i)=> s + (Number(i.unitPrice||0)*Number(i.qty||0)), 0);
-
     const msg = state.lang==="ar"
-      ? `طلب COD من متجر أزل\n\n${lines}\n\nالإجمالي: ${money(total)}`
-      : `COD order from azl MG shop\n\n${lines}\n\nTotal: ${money(total)}`;
+      ? `طلب COD من متجر أزل\n${lines}\nالإجمالي: ${money(total)}`
+      : `COD order from azl MG shop\n${lines}\nTotal: ${money(total)}`;
 
     window.open(`https://wa.me/${COD_WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
   }
 
-  // ====== EVENTS ======
+  // ====== FIX إضافي: منع الخلفية من التقاط ضغط داخل السلة ======
+  $("#panel").addEventListener("click", (e)=> e.stopPropagation());
+  $("#panel").addEventListener("pointerdown", (e)=> e.stopPropagation());
+
+  // events
   $("#langBtn").addEventListener("click", ()=>{
     state.lang = state.lang==="ar" ? "en" : "ar";
     save();
@@ -781,18 +698,19 @@
   $("#cartBtn").addEventListener("click", openCart);
   $("#back").addEventListener("click", closeCart);
   $("#closeBtn").addEventListener("click", closeCart);
-
   $("#payBtn").addEventListener("click", payNow);
   $("#codBtn").addEventListener("click", placeCOD);
 
-  // ====== BOOT ======
-  (function boot(){
+  // boot
+  (async ()=>{
+    try{ await loadProducts(); }
+    catch(e){ loadFallbackProducts(); }
+
     applyLang();
     renderCategories();
     renderProducts();
     updateCartUI();
   })();
 </script>
-
 </body>
 </html>
